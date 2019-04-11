@@ -1,3 +1,5 @@
+from agent import Agent
+
 pickup_matrix = [[[None, -1, -1, None], [None, -1, -1, 13], [None, -1, -1, -1], [None, -1, -1, -1], [None, None, -1, -1]],
                  [[13, -1, -1, None], [-1, -1, -1, -1], [-1, -1, 13, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]],
                  [[-1, -1, -1, None], [-1, 13, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, 13], [-1, None, -1, -1]],
@@ -14,12 +16,10 @@ q_table = [ [0,0,0,0,0,0], [0,0,0,0,0,0], [0,0,0,0,0,0], [0,0,0,0,0,0],
 
 pickup_states = [[0, 0], [2, 2], [4, 4]]
 
+learning_rate = None
+discount_rate = None
 
-
-
-
-
-
+agent = Agent()
 
 # pass in row to lookup in q-table
 #def PRandom(row, col):
