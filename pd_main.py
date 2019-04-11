@@ -33,10 +33,9 @@ agent.policy = "PRandom"
 row = agent.state_space[0]
 col = agent.state_space[1]
 hasBlock = agent.state_space[2]
-
 position = [row, col]
 
-# TODO pass in row to lookup in q-table
+# TODO: pass in row to lookup in q-table
 def PRandom(row, col, agent):
     if (pickup_matrix[row][col] in pickup_states):
       agent.state_space[2] = 1       # pickup
@@ -48,8 +47,8 @@ def PRandom(row, col, agent):
         if pickup_matrix[row][col][i] != None:
           possible_actions.append(i)
 
-      choice = random.sample(possible_actions, 1) # Choose a random possible choice
-      direction = directions[choice]
+      choice = random.choice(possible_actions)
+      direction = directions.get(choice)
 
       if direction == "north":
         agent.state_space[0] -= 1
@@ -59,3 +58,7 @@ def PRandom(row, col, agent):
         agent.state_space[0] += 1
       elif direction == "west":
         agent.state_space[1] -= 1
+
+# print("Current position: ", agent.state_space)
+# PRandom(row,col,agent)
+# print("New position: ", agent.state_space)
