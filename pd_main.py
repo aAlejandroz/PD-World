@@ -1,6 +1,5 @@
 from agent import Agent
-
-[None, 1, 1, None]
+import random
 
 pickup_matrix = [[[None, -1, -1, None], [None, -1, -1, 13], [None, -1, -1, -1], [None, -1, -1, -1], [None, None, -1, -1]],
                  [[13, -1, -1, None], [-1, -1, -1, -1], [-1, -1, 13, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]],
@@ -20,7 +19,7 @@ directions = {
         0 : 'north',
         1 : 'east',
         2 : 'south',
-        3 : 'east'
+        3 : 'west'
       }
 
 pickup_states = [[0, 0], [2, 2], [4, 4]]
@@ -37,21 +36,26 @@ hasBlock = agent.state_space[2]
 
 position = [row, col]
 
-# PRandom(row, col)
-
-# pass in row to lookup in q-table
-def PRandom(row, col):
-    # if state is a pickup state, pickup
-    # else choose random column based on current row.
+# TODO pass in row to lookup in q-table
+def PRandom(row, col, agent):
     if (pickup_matrix[row][col] in pickup_states):
-      # pickup
+      agent.state_space[2] = 1       # pickup
+      # TODO: decrement blocks on space
     else:
-      # choose random action if applicable
-      # for num in pickup_matrix[row][col]:
-      #   if
-      for row in pickup_matrix[row][col]:
-        for col in pickup_matrix[row][col]:
+      possible_actions = []
 
-      possible_actions = ['east', 'south']
+      for i in range(4):
+        if pickup_matrix[row][col][i] != None:
+          possible_actions.append(i)
 
+      choice = random.sample(possible_actions, 1) # Choose a random possible choice
+      direction = directions[choice]
 
+      if direction == "north":
+        agent.state_space[0] -= 1
+      elif direction == "east":
+        agent.state_space[1] += 1
+      elif direction == "south":
+        agent.state_space[0] += 1
+      elif direction == "west":
+        agent.state_space[1] -= 1
