@@ -31,6 +31,9 @@ dropoff_q_table = [ [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]]
 
+
+
+
 # 25 states with 6 actions
 # new_pickup_q_table = np.zeros([25,6])
 pickup_states = [[0, 0], [2, 2], [4, 4]]
@@ -155,7 +158,7 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent):
   pickup_q_table[row][col][action.value] = Q_value + learning_rate * (reward + discount_rate *
                                    pickup_q_table[next_state[0]][next_state[1]][next_action.value] - Q_value)
 
-  print(f'Q({action.name}, {agent.state}) = {pickup_q_table[row][col][action.value]}')
+  #print(f'Q({action.name}, {agent.state}) = {pickup_q_table[row][col][action.value]}')
 
   agent.updateState(next_state)   # new state is updated
   agent.updatePosition()          # agent's position is updated
@@ -176,39 +179,102 @@ def Q_learning(learning_rate, discount_rate, agent):
   new_row = next_state[0]
   new_col = next_state[1]
 
-  print(f'Q({action.name}, {agent.state}) = {pickup_q_table[row][col][action.value]}')
+  #print(f'Q({action.name}, {agent.state}) = {pickup_q_table[row][col][action.value]}')
 
   old_value = pickup_q_table[row][col][action.value]
   next_max = np.max(pickup_q_table[new_row][new_col])
   new_q_value = (1 - learning_rate )* old_value + learning_rate*(agent.reward + discount_rate * next_max)
   pickup_q_table[row][col][action.value] = new_q_value
 
-  print(f'Q({action.name}, {agent.state}) = {pickup_q_table[row][col][action.value]}')
+  #print(f'Q({action.name}, {agent.state}) = {pickup_q_table[row][col][action.value]}')
 
 
   agent.updateState(next_state)  # new state is updated
   agent.updatePosition()         # agent's position is updated
 
 
+def experiment_1():
+  learning_rate = 0.3
+  discount_rate = 0.5
+
+  for index in range(4000):
+    agent.policy = "PRandom"
+    Q_learning(learning_rate, discount_rate, agent)
+
+  #TODO Where we display the Q_table
+  print("Q TABLE for PRandom")
+  for row in range(5):
+    for column in range(5):
+      print(pickup_q_table[row][column], end=" ")
+    print()
+
+  for index in range(4000):
+    agent.policy = "PGreedy"
+    Q_learning(learning_rate, discount_rate, agent)
+
+  print('\n')
+
+  print("Q TABLE for PGreedy")
+  for row in range(5):
+    for column in range(5):
+      print(pickup_q_table[row][column], end=" ")
+    print()
+
+
+def experiment_2():
+  learning_rate = 0.3
+  discount_rate = 0.5
+  for index in range(200):
+    agent.policy = "PRandom"
+    Q_learning(learning_rate,discount_rate,agent)
+
+  # TODO Display and interpret the Q-table
+
+  for index in range(7800):
+    agent.policy = "PExploit"
+    Q_learning(learning_rate,discount_rate,agent)
+
+def experiment_3():
+  learning_rate = 0.3
+  discount_rate = 0.5
+  for index in range(200):
+    agent.policy = "PRandom"
+    SARSA_update(learning_rate, discount_rate, None,agent)
+
+  # TODO Display and interpret the Q-table
+
+  for index in range(7800):
+    agent.policy = "PExploit"
+    SARSA_update(learning_rate, discount_rate,None ,agent)
+
+  #TODO final Q_table
+
+def experiments_4():
+  learning_rate = 0.3
+  discount_rate = 1
+  for index in range(200):
+    agent.policy = "PRandom"
+    SARSA_update(learning_rate, discount_rate, None, agent)
+
+  # TODO Display and interpret the Q-table
+
+  for index in range(7800):
+    agent.policy = "PExploit"
+    SARSA_update(learning_rate, discount_rate, None, agent)
+
+  # TODO final Q_table
+
+
+def experiment_5():
+  pass
+
+
+
 #--------- MAIN ----------#
 if __name__ == '__main__':
 
-  agent.policy = "PGreedy"
+  experiment_1()
 
-  print("Q-Learning")
-  for i in range(1001):
-    print("\nSTEP ", i)
-    print("Current state: ", agent.state)
-    Q_learning(learning_rate, discount_rate, agent)
-    print("New state: ", agent.state)
-
-  print("\n")
-
-  print("Q TABLE")
-  for row in range(5):
-    for column in range(5):
-      print(pickup_q_table[row][column], end = " ")
-    print()
 
   # print("Sarsa")
   # print("STEP 1")
