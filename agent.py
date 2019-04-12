@@ -1,7 +1,7 @@
 # class for agent
 class Agent():
 
-  past_state_space = [0, 4, 0]
+  past_state_space = None
   new_state_space = [0, 4, 0]
   policy = None
   bank_account = 0

@@ -1,5 +1,6 @@
 from agent import Agent
 import random
+import copy
 
 pickup_matrix = [[[None, -1, -1, None], [None, -1, -1, 13], [None, -1, -1, -1], [None, -1, -1, -1], [None, None, -1, -1]],
                  [[13, -1, -1, None], [-1, -1, -1, -1], [-1, -1, 13, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]],
@@ -35,11 +36,12 @@ position = [row, col]
 
 # TODO: pass in row to lookup in q-table
 def PRandom(row, col, agent):
-    if (pickup_matrix[row][col] in pickup_states):
-      agent.state_space[2] = 1       # pickup
+  agent.past_state_space = copy.deepcopy(agent.new_state_space)
+  if (pickup_matrix[row][col] in pickup_states):
+      agent.new_state_space[2] = 1       # pickup
       agent.bank_account += 13
-      # TODO: decrement blocks on space
-    else:
+    # TODO: decrement blocks on space
+  else:
       possible_actions = []
 
       for i in range(4):
@@ -65,7 +67,7 @@ def PRandom(row, col, agent):
 
       agent.bank_account -= 1
 
-    agent.num_operators += 1
+  agent.num_operators += 1
 # end PRandom
 
 # TODO: update Q-value
