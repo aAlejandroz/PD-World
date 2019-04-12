@@ -1,6 +1,8 @@
 from agent import Agent
 import random
 import copy
+import numpy as np
+
 
 pickup_matrix = [[[None, -1, -1, None], [None, -1, -1, 13], [None, -1, -1, -1], [None, -1, -1, -1], [None, None, -1, -1]],
                  [[13, -1, -1, None], [-1, -1, -1, -1], [-1, -1, 13, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]],
@@ -17,6 +19,9 @@ q_table = [ [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]]
+
+#25 states with 6 actions
+new_q_table = np.zeros([25,6])
 
 actions = {
         0 : 'north',
@@ -84,6 +89,8 @@ def get_PRandom_action(row, col, agent):
 # action = action
 # state = agent.new_state_space
 # def SARSA_update(action, state):
+
+
 
 print("Current position: ", agent.new_state_space)
 action = get_PRandom_action(row,col,agent)
