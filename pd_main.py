@@ -98,10 +98,10 @@ def get_PRandom_action(row, col, agent):
 
 def Q_learning(current_state,action,next_state):
     current_reward = 10
-    learning_rate = 1
+    learning_rate = 0.5
     discount_rate = 0.5
     old_value = new_q_table[current_state][action]
-    next_max = np.max(q_table[next_state])
+    next_max = np.max(new_q_table[next_state])
     new_q_value = (1 - learning_rate )* old_value + learning_rate*(current_reward + discount_rate * next_max)
     new_q_table[current_state][action] = new_q_value
     print(new_q_table)
@@ -112,6 +112,6 @@ print("Current position: ", agent.new_state_space)
 new_action = get_PRandom_action(row,col,agent)
 print("New position: ", agent.new_state_space)
 
-
+Q_learning(0,2,5)
 
 # SARSA_update(action, agent.past_state_space)
