@@ -50,13 +50,18 @@ def PRandom(row, col, agent):
       direction = directions.get(choice)
 
       if direction == "north":
-        agent.state_space[0] -= 1
+
+        agent.new_state_space[0] -= 1
+
       elif direction == "east":
-        agent.state_space[1] += 1
+
+        agent.new_state_space[1] += 1
       elif direction == "south":
-        agent.state_space[0] += 1
+
+        agent.new_state_space[0] += 1
+
       elif direction == "west":
-        agent.state_space[1] -= 1
+        agent.new_state_space[1] -= 1
 
       agent.bank_account -= 1
 
