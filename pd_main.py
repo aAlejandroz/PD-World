@@ -2,7 +2,7 @@ from agent import Agent
 import random
 import copy
 import enum
-# import numpy as np
+import numpy as np
 
 # creating enumerations using class
 class actions(enum.Enum):
@@ -144,7 +144,7 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent):
   print(f'Q({action.name}, {agent.state}) = {q_table[row][col][action.value]}')
 
   if action.value < 4:
-    q_table[row][col][action.value] = Q_value + learning_rate * (pickup_matrix[row][col][action.value] + discount_rate *
+    q_table[row][col][action.value] = Q_value + learning_rate * (agent.reward + discount_rate *
                                    q_table[next_state[0]][next_state[1]][next_action.value] - Q_value)
 
   print(f'Q({action.name}, {agent.state}) = {q_table[row][col][action.value]}')
@@ -154,18 +154,36 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent):
 
   return next_action
 
+
+
 # q(a,s) = 1- alpha * old_q(a,s) + alpha *[ Reward + discount * MAX_q)a',s')
-# def Q_learning(current_state,action,next_state):
-#     current_reward = 10
-#     learning_rate = 0.5
-#     discount_rate = 0.5
-#     old_value = new_q_table[current_state][action]
-#     next_max = np.max(new_q_table[next_state])
-#     new_q_value = (1 - learning_rate )* old_value + learning_rate*(current_reward + discount_rate * next_max)
-#     new_q_table[current_state][action] = new_q_value
-#     print(new_q_table)
+def Q_learning(learning_rate, discount_rate, agent):
+  row = agent.position[0]
+  col = agent.position[1]
+  position = agent.position
+
+  possible_actions = getAllPossibleNextAction(position)           # possible actions in state
+  action = getPolicyAction(agent, agent.state, possible_actions)  # a = action chosen in state
+  next_state = getNextState(agent.state, action)                  # s' = next state after action is applied
+
+  new_row = next_state[0]
+  new_col = next_state[1]
+
+  print(f'Q({action.name}, {agent.state}) = {q_table[row][col][action.value]}')
+
+  old_value = q_table[row][col][action.value]
+  next_max = np.max(q_table[new_row][new_col])
+  new_q_value = (1 - learning_rate )* old_value + learning_rate*(agent.reward + discount_rate * next_max)
+  q_table[row][col][action.value] = new_q_value
+
+  print(f'Q({action.name}, {agent.state}) = {q_table[row][col][action.value]}')
+
+
+  agent.updateState(next_state)  # new state is updated
+  agent.updatePosition()         # agent's position is updated
 
 #--------- MAIN ----------#
+print("Sarsa")
 print("STEP 1")
 print("Current state: ", agent.state)
 next_action = SARSA_update(learning_rate, discount_rate, None, agent)
@@ -179,11 +197,24 @@ for i in range(99):
 
 print("\n")
 
-print("Q TABLE")
-for row in range(5):
-  for column in range(5):
-    print(q_table[row][column], end = " ")
-  print()
+# print("Q-Learning")
+# print("STEP 1")
+# print("Current state: ", agent.state)
+# Q_learning(learning_rate, discount_rate, agent)
+# print("New state: ", agent.state)
+#
+# for i in range(99):
+#   print("\nSTEP ",2 + i)
+#   print("Current state: ", agent.state)
+#   Q_learning(learning_rate, discount_rate, agent)
+#   print("New state: ", agent.state)
+#
+# print("\n")
+#
+# print("Q TABLE")
+# for row in range(5):
+#   for column in range(5):
+#     print(q_table[row][column], end = " ")
+#   print()
 
-# Q_learning(0,2,5)
 
