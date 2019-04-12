@@ -159,44 +159,44 @@ def Q_learning(learning_rate, discount_rate, agent):
   agent.updatePosition()         # agent's position is updated
 
 #--------- MAIN ----------#
-print("Sarsa")
-print("STEP 1")
-print("Current state: ", agent.state)
-next_action = SARSA_update(learning_rate, discount_rate, None, agent)
-print("New state: ", agent.state)
-
-for i in range(999):
-  print("\nSTEP ",2 + i)
+if __name__ == '__main__':
+  print("Sarsa")
+  print("STEP 1")
   print("Current state: ", agent.state)
-  next_action = SARSA_update(learning_rate, discount_rate, next_action, agent)
+  next_action = SARSA_update(learning_rate, discount_rate, None, agent)
   print("New state: ", agent.state)
-
-print("\n")
-
-print("Q TABLE")
-for row in range(5):
-  for column in range(5):
-    print(q_table[row][column], end = " ")
-  print()
-
-print("Q-Learning")
-print("STEP 1")
-print("Current state: ", agent.state)
-Q_learning(learning_rate, discount_rate, agent)
-print("New state: ", agent.state)
-
-for i in range(1000):
-  print("\nSTEP ",2 + i)
+  
+  for i in range(999):
+    print("\nSTEP ",2 + i)
+    print("Current state: ", agent.state)
+    next_action = SARSA_update(learning_rate, discount_rate, next_action, agent)
+    print("New state: ", agent.state)
+  
+  print("\n")
+  
+  print("Q TABLE")
+  for row in range(5):
+    for column in range(5):
+      print(q_table[row][column], end = " ")
+    print()
+  
+  print("Q-Learning")
+  print("STEP 1")
   print("Current state: ", agent.state)
   Q_learning(learning_rate, discount_rate, agent)
   print("New state: ", agent.state)
-
-print("\n")
-
-print("Q TABLE")
-for row in range(5):
-  for column in range(5):
-    print(q_table[row][column], end = " ")
-  print()
-
-
+  
+  for i in range(1000):
+    print("\nSTEP ",2 + i)
+    print("Current state: ", agent.state)
+    Q_learning(learning_rate, discount_rate, agent)
+    print("New state: ", agent.state)
+  
+  print("\n")
+  
+  print("Q TABLE")
+  for row in range(5):
+    for column in range(5):
+      print(q_table[row][column], end = " ")
+    print()
+  

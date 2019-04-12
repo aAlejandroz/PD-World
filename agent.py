@@ -1,5 +1,5 @@
 # class for agent
-class Agent():
+class Agent:
 
   past_state = None
   state = [0, 4, 0]
