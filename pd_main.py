@@ -100,9 +100,6 @@ def PRandom(possible_actions):
   randomChoice = random.choice(possible_actions)
   return randomChoice
 
-# TODO: Q-Leaning update function
-
-
 # updates q-value in q-table, returns next action
 def SARSA_update(learning_rate, discount_rate, next_action, agent):
   row = agent.position[0]
@@ -112,39 +109,18 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent):
   if next_action is None:
     possible_actions = getAllPossibleNextAction(position)                   # possible actions in state
     action = getPolicyAction(agent, agent.state, possible_actions)          # a = action chosen in state
-    next_state = getNextState(agent.state, action)                          # s' = next state after action is applied
   else:
     action = next_action                                                    # we know what our action is, so we chose it
-    next_state = getNextState(agent.state, next_action)
 
-# random policy
-def PRandom(possible_actions):
-  randomChoice = random.choice(possible_actions)
-  return randomChoice
-
-# updates q-value in q-table, returns next action
-def SARSA_update(learning_rate, discount_rate, next_action, agent):
-  row = agent.position[0]
-  col = agent.position[1]
-  position = agent.position
-
-  if next_action is None:
-    possible_actions = getAllPossibleNextAction(position)                   # possible actions in state
-    action = getPolicyAction(agent, agent.state, possible_actions)          # a = action chosen in state
-    next_state = getNextState(agent.state, action)                          # s' = next state after action is applied
-  else:
-    action = next_action                                                    # we know what our action is, so we chose it
-    next_state = getNextState(agent.state, next_action)
-
+  next_state = getNextState(agent.state, action)                            # s' = next state after action is applied
+  reward = agent.reward
   next_possible_actions = getAllPossibleNextAction(next_state)              # all possible actions in s'
   next_action = getPolicyAction(agent, next_state, next_possible_actions)   # a' = next action in s'
 
-  # TODO: Fix duplicate pickup
   Q_value = q_table[row][col][action.value]
   print(f'Q({action.name}, {agent.state}) = {q_table[row][col][action.value]}')
 
-  if action.value < 4:
-    q_table[row][col][action.value] = Q_value + learning_rate * (agent.reward + discount_rate *
+  q_table[row][col][action.value] = Q_value + learning_rate * (reward + discount_rate *
                                    q_table[next_state[0]][next_state[1]][next_action.value] - Q_value)
 
   print(f'Q({action.name}, {agent.state}) = {q_table[row][col][action.value]}')
@@ -189,7 +165,7 @@ print("Current state: ", agent.state)
 next_action = SARSA_update(learning_rate, discount_rate, None, agent)
 print("New state: ", agent.state)
 
-for i in range(99):
+for i in range(999):
   print("\nSTEP ",2 + i)
   print("Current state: ", agent.state)
   next_action = SARSA_update(learning_rate, discount_rate, next_action, agent)
@@ -197,24 +173,30 @@ for i in range(99):
 
 print("\n")
 
-# print("Q-Learning")
-# print("STEP 1")
-# print("Current state: ", agent.state)
-# Q_learning(learning_rate, discount_rate, agent)
-# print("New state: ", agent.state)
-#
-# for i in range(99):
-#   print("\nSTEP ",2 + i)
-#   print("Current state: ", agent.state)
-#   Q_learning(learning_rate, discount_rate, agent)
-#   print("New state: ", agent.state)
-#
-# print("\n")
-#
-# print("Q TABLE")
-# for row in range(5):
-#   for column in range(5):
-#     print(q_table[row][column], end = " ")
-#   print()
+print("Q TABLE")
+for row in range(5):
+  for column in range(5):
+    print(q_table[row][column], end = " ")
+  print()
+
+print("Q-Learning")
+print("STEP 1")
+print("Current state: ", agent.state)
+Q_learning(learning_rate, discount_rate, agent)
+print("New state: ", agent.state)
+
+for i in range(1000):
+  print("\nSTEP ",2 + i)
+  print("Current state: ", agent.state)
+  Q_learning(learning_rate, discount_rate, agent)
+  print("New state: ", agent.state)
+
+print("\n")
+
+print("Q TABLE")
+for row in range(5):
+  for column in range(5):
+    print(q_table[row][column], end = " ")
+  print()
 
 
