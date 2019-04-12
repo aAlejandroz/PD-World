@@ -36,6 +36,7 @@ pickup_states = [[0, 0], [2, 2], [4, 4]]
 
 learning_rate = None
 discount_rate = None
+current_reward = 0
 
 agent = Agent()
 agent.policy = "PRandom"
@@ -62,6 +63,8 @@ def get_PRandom_action(row, col, agent):
 
       randomChoice = random.choice(possible_actions)
       action = randomChoice
+      current_reward = pickup_matrix[row][col][action]
+
       direction = actions.get(randomChoice)
 
       if direction == "north":
@@ -91,9 +94,24 @@ def get_PRandom_action(row, col, agent):
 # def SARSA_update(action, state):
 
 
+# q(a,s) = 1- alpha * old_q(a,s) + alpha *[ Reward + discount * MAX_q)a',s')
+
+def Q_learning(current_state,action,next_state):
+    current_reward = 10
+    learning_rate = 1
+    discount_rate = 0.5
+    old_value = new_q_table[current_state][action]
+    next_max = np.max(q_table[next_state])
+    new_q_value = (1 - learning_rate )* old_value + learning_rate*(current_reward + discount_rate * next_max)
+    new_q_table[current_state][action] = new_q_value
+    print(new_q_table)
+
+
 
 print("Current position: ", agent.new_state_space)
-action = get_PRandom_action(row,col,agent)
+new_action = get_PRandom_action(row,col,agent)
 print("New position: ", agent.new_state_space)
+
+
 
 # SARSA_update(action, agent.past_state_space)
