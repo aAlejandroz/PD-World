@@ -1,5 +1,11 @@
 from agent import Agent
+from enum import Enum
 import random
+
+class CellStatus(Enum):
+  NORMAL = 1
+  PICKUP = 2
+  DROPOFF = 3
 
 pickup_matrix = [[[None, -1, -1, None], [None, -1, -1, 13], [None, -1, -1, -1], [None, -1, -1, -1], [None, None, -1, -1]],
                  [[13, -1, -1, None], [-1, -1, -1, -1], [-1, -1, 13, -1], [-1, -1, -1, -1], [-1, -1, -1, -1]],
@@ -11,7 +17,7 @@ q_table = [ [0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0
             [0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],
             [0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],
             [0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],
-            [0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]
+            [0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0] ]
 
 directions = {
         0 : 'north',
@@ -36,6 +42,7 @@ position = [row, col]
 # TODO: pass in row to lookup in q-table
 def PRandom(row, col, agent):
     if (pickup_matrix[row][col] in pickup_states):
+
       agent.state_space[2] = 1       # pickup
       agent.bank_account += 13
       # TODO: decrement blocks on space
@@ -44,6 +51,7 @@ def PRandom(row, col, agent):
 
       for i in range(4):
         if pickup_matrix[row][col][i] != None:
+
           possible_actions.append(i)
 
       choice = random.choice(possible_actions)
@@ -56,11 +64,13 @@ def PRandom(row, col, agent):
       elif direction == "east":
 
         agent.new_state_space[1] += 1
+
       elif direction == "south":
 
         agent.new_state_space[0] += 1
 
       elif direction == "west":
+
         agent.new_state_space[1] -= 1
 
       agent.bank_account -= 1
@@ -71,7 +81,7 @@ def PRandom(row, col, agent):
 # TODO: update Q-value
 # def Q_learningUpdate():
 
-
 print("Current position: ", agent.new_state_space)
 PRandom(row,col,agent)
 print("New position: ", agent.new_state_space)
+
