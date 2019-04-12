@@ -19,21 +19,26 @@ pickup_matrix = [[[None, -1, -1, None], [None, -1, -1, 13], [None, -1, -1, -1], 
                  [[-1, -1, -1, None], [-1, -1, -1, -1], [13, -1, -1, -1], [-1, -1, -1, -1], [-1, None, 13, -1]],
                  [[-1, -1, None, None], [-1, -1, None, -1], [-1, -1, None, -1], [-1, 13, None, -1], [-1, None, None, -1]]]
 
-q_table = [ [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
+pickup_q_table = [ [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
+            [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
+            [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
+            [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
+            [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]]
+
+dropoff_q_table = [ [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]]
 
 # 25 states with 6 actions
-# new_q_table = np.zeros([25,6])
+# new_pickup_q_table = np.zeros([25,6])
 pickup_states = [[0, 0], [2, 2], [4, 4]]
 
 learning_rate = 0.5
 discount_rate = 1
 
 agent = Agent()
-agent.policy = "PRandom"
 
 # returns action enum given agent's policy and possible actions
 def getPolicyAction(agent, state, possible_actions):
@@ -49,13 +54,13 @@ def getPolicyAction(agent, state, possible_actions):
   else:
     if agent.policy == "PRandom":
       action = actions(PRandom(possible_actions))
-      agent.bank_account -= 1
-      reward = -1
-    # TODO: Add other policies
-    # if policy == "PExploit":
-    #   action = actions(exploitAction(possible_actions))
-    # if policy == "PGreedy":
-    #   action = actions(greedyAction(possible_actions))
+    if agent.policy == "PExploit":
+      action = actions(PExploit(possible_actions, row, col))
+    if agent.policy == "PGreedy":
+      action = actions(PGreedy(possible_actions, row, col))
+
+    agent.bank_account -= 1
+    reward = -1
 
   agent.reward = reward
   agent.num_operators += 1
@@ -95,10 +100,37 @@ def getAllPossibleNextAction(position):
 
   return (possible_actions)
 
+
 # random policy
 def PRandom(possible_actions):
   randomChoice = random.choice(possible_actions)
   return randomChoice
+
+
+# exploit policy
+def PExploit(possible_actions, row, col):
+  if random.random() <= 0.8:
+    max_action = pickup_q_table[row][col][possible_actions[0]]
+    for num in possible_actions:
+      if pickup_q_table[row][col][num] >= max_action:
+        max_action = num
+    exploit_choice = max_action
+  else:
+    exploit_choice = random.choice(possible_actions)
+
+  return exploit_choice
+
+
+# greedy policy
+def PGreedy(possible_actions, row, col):
+  max_action = pickup_q_table[row][col][possible_actions[0]]
+  for num in possible_actions:
+    if pickup_q_table[row][col][num] >= max_action:
+      max_action = num
+  greedy_choice = max_action
+
+  return greedy_choice
+
 
 # updates q-value in q-table, returns next action
 def SARSA_update(learning_rate, discount_rate, next_action, agent):
@@ -117,19 +149,18 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent):
   next_possible_actions = getAllPossibleNextAction(next_state)              # all possible actions in s'
   next_action = getPolicyAction(agent, next_state, next_possible_actions)   # a' = next action in s'
 
-  Q_value = q_table[row][col][action.value]
-  print(f'Q({action.name}, {agent.state}) = {q_table[row][col][action.value]}')
+  Q_value = pickup_q_table[row][col][action.value]
+  print(f'Q({action.name}, {agent.state}) = {pickup_q_table[row][col][action.value]}')
 
-  q_table[row][col][action.value] = Q_value + learning_rate * (reward + discount_rate *
-                                   q_table[next_state[0]][next_state[1]][next_action.value] - Q_value)
+  pickup_q_table[row][col][action.value] = Q_value + learning_rate * (reward + discount_rate *
+                                   pickup_q_table[next_state[0]][next_state[1]][next_action.value] - Q_value)
 
-  print(f'Q({action.name}, {agent.state}) = {q_table[row][col][action.value]}')
+  print(f'Q({action.name}, {agent.state}) = {pickup_q_table[row][col][action.value]}')
 
   agent.updateState(next_state)   # new state is updated
   agent.updatePosition()          # agent's position is updated
 
   return next_action
-
 
 
 # q(a,s) = 1- alpha * old_q(a,s) + alpha *[ Reward + discount * MAX_q)a',s')
@@ -145,58 +176,56 @@ def Q_learning(learning_rate, discount_rate, agent):
   new_row = next_state[0]
   new_col = next_state[1]
 
-  print(f'Q({action.name}, {agent.state}) = {q_table[row][col][action.value]}')
+  print(f'Q({action.name}, {agent.state}) = {pickup_q_table[row][col][action.value]}')
 
-  old_value = q_table[row][col][action.value]
-  next_max = np.max(q_table[new_row][new_col])
+  old_value = pickup_q_table[row][col][action.value]
+  next_max = np.max(pickup_q_table[new_row][new_col])
   new_q_value = (1 - learning_rate )* old_value + learning_rate*(agent.reward + discount_rate * next_max)
-  q_table[row][col][action.value] = new_q_value
+  pickup_q_table[row][col][action.value] = new_q_value
 
-  print(f'Q({action.name}, {agent.state}) = {q_table[row][col][action.value]}')
+  print(f'Q({action.name}, {agent.state}) = {pickup_q_table[row][col][action.value]}')
 
 
   agent.updateState(next_state)  # new state is updated
   agent.updatePosition()         # agent's position is updated
 
+
 #--------- MAIN ----------#
 if __name__ == '__main__':
-  print("Sarsa")
-  print("STEP 1")
-  print("Current state: ", agent.state)
-  next_action = SARSA_update(learning_rate, discount_rate, None, agent)
-  print("New state: ", agent.state)
-  
-  for i in range(999):
-    print("\nSTEP ",2 + i)
-    print("Current state: ", agent.state)
-    next_action = SARSA_update(learning_rate, discount_rate, next_action, agent)
-    print("New state: ", agent.state)
-  
-  print("\n")
-  
-  print("Q TABLE")
-  for row in range(5):
-    for column in range(5):
-      print(q_table[row][column], end = " ")
-    print()
-  
+
+  agent.policy = "PGreedy"
+
   print("Q-Learning")
-  print("STEP 1")
-  print("Current state: ", agent.state)
-  Q_learning(learning_rate, discount_rate, agent)
-  print("New state: ", agent.state)
-  
-  for i in range(1000):
-    print("\nSTEP ",2 + i)
+  for i in range(1001):
+    print("\nSTEP ", i)
     print("Current state: ", agent.state)
     Q_learning(learning_rate, discount_rate, agent)
     print("New state: ", agent.state)
-  
+
   print("\n")
-  
+
   print("Q TABLE")
   for row in range(5):
     for column in range(5):
-      print(q_table[row][column], end = " ")
+      print(pickup_q_table[row][column], end = " ")
     print()
-  
+
+  # print("Sarsa")
+  # print("STEP 1")
+  # print("Current state: ", agent.state)
+  # next_action = SARSA_update(learning_rate, discount_rate, None, agent)
+  # print("New state: ", agent.state)
+  #
+  # for i in range(999):
+  #   print("\nSTEP ", 2 + i)
+  #   print("Current state: ", agent.state)
+  #   next_action = SARSA_update(learning_rate, discount_rate, next_action, agent)
+  #   print("New state: ", agent.state)
+  #
+  # print("\n")
+  #
+  # print("Q TABLE")
+  # for row in range(5):
+  #   for column in range(5):
+  #     print(pickup_q_table[row][column], end=" ")
+  #   print()
