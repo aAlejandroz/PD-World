@@ -115,13 +115,15 @@ def PRandom(possible_actions):
 def PExploit(possible_actions, row, col):
   duplicate = []
   if random.random() <= 0.8:
-    max_action = pickup_q_table[row][col][possible_actions[0]]  # max_q_value is first action in possible_actions
+    max_action = possible_actions[0]  # max_q_value is first action in possible_actions
     for num in possible_actions:
-      if pickup_q_table[row][col][num] > max_action:
+      q_value = pickup_q_table[row][col][num]
+      cur_q_max = pickup_q_table[row][col][max_action]
+      if q_value > cur_q_max:
         max_action = num
         duplicate.clear()
         duplicate.append(num)
-      elif pickup_q_table[row][col][num] == max_action:
+      elif q_value == cur_q_max:
         duplicate.append(num)
 
     exploit_choice = max_action
@@ -137,13 +139,16 @@ def PExploit(possible_actions, row, col):
 # greedy policy
 def PGreedy(possible_actions, row, col):
   duplicate = []
-  max_action = pickup_q_table[row][col][possible_actions[0]]
+
+  max_action = possible_actions[0]
   for num in possible_actions:
-    if pickup_q_table[row][col][num] > max_action:
+    q_value = pickup_q_table[row][col][num]
+    cur_q_max = pickup_q_table[row][col][max_action]
+    if q_value > cur_q_max:
       max_action = num
       duplicate.clear()
       duplicate.append(num)
-    elif pickup_q_table[row][col][num] == max_action:
+    elif q_value == cur_q_max:
       duplicate.append(num)
 
   greedy_choice = max_action
@@ -291,7 +296,7 @@ def experiment_5():
 
 #--------- MAIN ----------#
 if __name__ == '__main__':
-
+  print()
   experiment_1()
 
 
