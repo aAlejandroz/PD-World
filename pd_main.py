@@ -13,11 +13,11 @@ class actions(enum.Enum):
   PICKUP = 4
   DROP   = 5
 
-pickup_matrix = [[[None, -1, -1, None], [None, -1, -1, 13], [None, -1, -1, -1], [None, -1, -1, -1], [None, None, -1, -1]],
-                 [[13, -1, -1, None], [-1, -1, -1, -1], [-1, -1, 13, -1], [-1, -1, -1, -1], [-1, None, -1, -1]],
-                 [[-1, -1, -1, None], [-1, 13, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, 13], [-1, None, -1, -1]],
-                 [[-1, -1, -1, None], [-1, -1, -1, -1], [13, -1, -1, -1], [-1, -1, -1, -1], [-1, None, 13, -1]],
-                 [[-1, -1, None, None], [-1, -1, None, -1], [-1, -1, None, -1], [-1, 13, None, -1], [-1, None, None, -1]]]
+pickup_matrix = [[[None, -1, -1, None], [None, -1, -1, -1], [None, -1, -1, -1], [None, -1, -1, -1], [None, None, -1, -1]],
+                 [[-1, -1, -1, None], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, None, -1, -1]],
+                 [[-1, -1, -1, None], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, None, -1, -1]],
+                 [[-1, -1, -1, None], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, None, -1, -1]],
+                 [[-1, -1, None, None], [-1, -1, None, -1], [-1, -1, None, -1], [-1, -1, None, -1], [-1, None, None, -1]]]
 
 pickup_q_table = [ [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
@@ -32,12 +32,10 @@ dropoff_q_table = [ [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]]
 
 
-
-
 # 25 states with 6 actions
 # new_pickup_q_table = np.zeros([25,6])
 pickup_states = [[0, 0], [2, 2], [4, 4]]
-dropoff_states = [[1,4], [4,0], [4,2]]
+dropoff_states = [[1,4], [4, 0], [4, 2]]
 
 learning_rate = 0.5
 discount_rate = 1
@@ -50,11 +48,16 @@ def getPolicyAction(agent, state, possible_actions):
   col = state[1]
   pos = [row, col]
 
-  if pos in pickup_states and state[2] == 0:
+  if pos in pickup_states and state[2] == 0:      # Pickup
     action = actions.PICKUP
     agent.bank_account += 13
     reward = 13
-    # TODO: decrement blocks on space
+    # TODO: decrement blocks on pick up space
+  elif pos in dropoff_states and state[2] == 1:   # Dropoff
+    action = actions.DROP
+    agent.bank_account += 13
+    reward = 13
+    # TODO: increment blocks on drop off space
   else:
     if agent.policy == "PRandom":
       action = actions(PRandom(possible_actions))
@@ -73,7 +76,7 @@ def getPolicyAction(agent, state, possible_actions):
 
 
 # returns new state when action is applied to old state
-def getNextState(old_state, action):
+def getNextState(agent, old_state, action):
   new_state = copy.deepcopy(old_state)
   if action.name == "NORTH":
     new_state[0] -= 1
@@ -88,6 +91,7 @@ def getNextState(old_state, action):
   elif action.name == "DROP":
     new_state[2] = 0
 
+  # agent.updateState(new_state)
   return new_state
 
 
@@ -171,18 +175,21 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent):
   else:
     action = next_action                                                    # we know what our action is, so we chose it
 
-  next_state = getNextState(agent.state, action)                            # s' = next state after action is applied
+  next_state = getNextState(agent, agent.state, action)                     # s' = next state after action is applied
   reward = agent.reward
   next_possible_actions = getAllPossibleNextAction(next_state)              # all possible actions in s'
   next_action = getPolicyAction(agent, next_state, next_possible_actions)   # a' = next action in s'
 
-  Q_value = pickup_q_table[row][col][action.value]
-  print(f'Q({action.name}, {agent.state}) = {pickup_q_table[row][col][action.value]}')
-
-  pickup_q_table[row][col][action.value] = Q_value + learning_rate * (reward + discount_rate *
-                                   pickup_q_table[next_state[0]][next_state[1]][next_action.value] - Q_value)
-
-  #print(f'Q({action.name}, {agent.state}) = {pickup_q_table[row][col][action.value]}')
+  if (not agent.hasBlock()):
+    Q_value = pickup_q_table[row][col][action.value]
+    pickup_q_table[row][col][action.value] = Q_value + learning_rate * (reward + discount_rate *
+                                                                        pickup_q_table[next_state[0]][next_state[1]][
+                                                                          next_action.value] - Q_value)
+  else:
+    Q_value = dropoff_q_table[row][col][action.value]
+    dropoff_q_table[row][col][action.value] = Q_value + learning_rate * (reward + discount_rate *
+                                                                        dropoff_q_table[next_state[0]][next_state[1]][
+                                                                          next_action.value] - Q_value)
 
   agent.updateState(next_state)   # new state is updated
   agent.updatePosition()          # agent's position is updated
@@ -198,22 +205,26 @@ def Q_learning(learning_rate, discount_rate, agent):
 
   possible_actions = getAllPossibleNextAction(position)           # possible actions in state
   action = getPolicyAction(agent, agent.state, possible_actions)  # a = action chosen in state
-  next_state = getNextState(agent.state, action)                  # s' = next state after action is applied
+  next_state = getNextState(agent, agent.state, action)                  # s' = next state after action is applied
 
   new_row = next_state[0]
   new_col = next_state[1]
 
+  if (not agent.hasBlock()):
+    old_value = pickup_q_table[row][col][action.value]
+    next_max = np.max(pickup_q_table[new_row][new_col])
+    new_q_value = (1 - learning_rate) * old_value + learning_rate * (agent.reward + discount_rate * next_max)
+    pickup_q_table[row][col][action.value] = new_q_value
+  else:
+    old_value = dropoff_q_table[row][col][action.value]
+    next_max = np.max(dropoff_q_table[new_row][new_col])
+    new_q_value = (1 - learning_rate) * old_value + learning_rate * (agent.reward + discount_rate * next_max)
+    dropoff_q_table[row][col][action.value] = new_q_value
+
+
   #print(f'Q({action.name}, {agent.state}) = {pickup_q_table[row][col][action.value]}')
 
-  old_value = pickup_q_table[row][col][action.value]
-  next_max = np.max(pickup_q_table[new_row][new_col])
-  new_q_value = (1 - learning_rate )* old_value + learning_rate*(agent.reward + discount_rate * next_max)
-  pickup_q_table[row][col][action.value] = new_q_value
-
-  #print(f'Q({action.name}, {agent.state}) = {pickup_q_table[row][col][action.value]}')
-
-
-  agent.updateState(next_state)  # new state is updated
+  agent.updateState(next_state)
   agent.updatePosition()         # agent's position is updated
 
 
@@ -221,27 +232,28 @@ def experiment_1():
   learning_rate = 0.3
   discount_rate = 0.5
 
-  for index in range(100):
+  for index in range(4000):
     agent.policy = "PRandom"
     Q_learning(learning_rate, discount_rate, agent)
 
   #TODO Where we display the Q_table
-  print("Q TABLE for PRandom")
-  for row in range(5):
-    for column in range(5):
-      print(pickup_q_table[row][column], end=" ")
-    print()
 
-  for index in range(100):
+  for index in range(4000):
     agent.policy = "PGreedy"
     Q_learning(learning_rate, discount_rate, agent)
 
   print('\n')
 
-  print("Q TABLE for PGreedy")
+  print("Pickup Q TABLE")
   for row in range(5):
     for column in range(5):
       print(pickup_q_table[row][column], end=" ")
+    print()
+
+  print("\nDropoff Q TABLE")
+  for row in range(5):
+    for column in range(5):
+      print(dropoff_q_table[row][column], end=" ")
     print()
 
 
@@ -298,7 +310,6 @@ def experiment_5():
 if __name__ == '__main__':
   print()
   experiment_1()
-
 
   # print("Sarsa")
   # print("STEP 1")

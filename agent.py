@@ -25,3 +25,6 @@ class Agent:
 
   def canPickup(self):
     return self.state[2] == 0
+
+  def hasBlock(self):
+    return self.state[2] == 1
