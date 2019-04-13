@@ -37,6 +37,7 @@ dropoff_q_table = [ [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,
 # 25 states with 6 actions
 # new_pickup_q_table = np.zeros([25,6])
 pickup_states = [[0, 0], [2, 2], [4, 4]]
+dropoff_states = [[1,4], [4,0], [4,2]]
 
 learning_rate = 0.5
 discount_rate = 1
@@ -112,12 +113,21 @@ def PRandom(possible_actions):
 
 # exploit policy
 def PExploit(possible_actions, row, col):
+  duplicate = []
   if random.random() <= 0.8:
-    max_action = pickup_q_table[row][col][possible_actions[0]]
+    max_action = pickup_q_table[row][col][possible_actions[0]]  # max_q_value is first action in possible_actions
     for num in possible_actions:
-      if pickup_q_table[row][col][num] >= max_action:
+      if pickup_q_table[row][col][num] > max_action:
         max_action = num
+        duplicate.clear()
+        duplicate.append(num)
+      elif pickup_q_table[row][col][num] == max_action:
+        duplicate.append(num)
+
     exploit_choice = max_action
+
+    if (len(duplicate) > 1):
+      exploit_choice = random.choice(duplicate)
   else:
     exploit_choice = random.choice(possible_actions)
 
@@ -126,11 +136,20 @@ def PExploit(possible_actions, row, col):
 
 # greedy policy
 def PGreedy(possible_actions, row, col):
+  duplicate = []
   max_action = pickup_q_table[row][col][possible_actions[0]]
   for num in possible_actions:
-    if pickup_q_table[row][col][num] >= max_action:
+    if pickup_q_table[row][col][num] > max_action:
       max_action = num
+      duplicate.clear()
+      duplicate.append(num)
+    elif pickup_q_table[row][col][num] == max_action:
+      duplicate.append(num)
+
   greedy_choice = max_action
+
+  if (len(duplicate) > 1):
+    greedy_choice = random.choice(duplicate)
 
   return greedy_choice
 
@@ -197,7 +216,7 @@ def experiment_1():
   learning_rate = 0.3
   discount_rate = 0.5
 
-  for index in range(4000):
+  for index in range(100):
     agent.policy = "PRandom"
     Q_learning(learning_rate, discount_rate, agent)
 
@@ -208,7 +227,7 @@ def experiment_1():
       print(pickup_q_table[row][column], end=" ")
     print()
 
-  for index in range(4000):
+  for index in range(100):
     agent.policy = "PGreedy"
     Q_learning(learning_rate, discount_rate, agent)
 
