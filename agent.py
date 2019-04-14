@@ -2,8 +2,8 @@
 class Agent:
 
   past_state = None
-  state = [0, 4, 0]
-  position = [0, 4]
+  state = [0, 0, 0]
+  position = [0, 0]
   policy = None
   bank_account = 0
   reward = 0
@@ -14,6 +14,10 @@ class Agent:
     policy = None
     bank_account = 0
     num_operators = 0
+
+  def updateRewards(self, reward):
+    self.reward = reward
+    self.bank_account += reward
 
   def updatePosition(self):
     self.position[0] = self.state[0]
