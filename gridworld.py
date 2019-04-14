@@ -7,8 +7,7 @@ class Gridworld:
     def __init__(self, gamma=0.9, alpha=0.5, epsilon=0.01):
 
         self.root = tk
-        #self.frame = self.root.Canvas(bg='black', height=400, width=500)
-        self.frame = self.root.Canvas(bg='black', height=600, width=600)
+        self.frame = self.root.Canvas(bg='black', height=400, width=500)
         self.frame.pack()
         self.gamma = gamma
         self.alpha = alpha
@@ -34,8 +33,9 @@ class Gridworld:
 
         self.reward_table()
 
-        # self.frame.create_rectangle(30, 30, 470, 360, fill='sea green')
-        # self.frame.create_rectangle(360, 140, 470, 250, fill='red')
+        self.frame.create_rectangle(30, 30, 470, 360, fill='sea green')
+        self.frame.create_rectangle(140, 140, 250, 250, fill='grey')
+        self.frame.create_rectangle(360, 140, 470, 250, fill='red')
 
         self.frame.create_line(370, 40, 460, 40, 460, 130, 370, 130, 370, 40, fill='white', width=2)
         self.frame.create_text(415, 85, text=self.sr[0][4], font="Verdana 10 bold", fill='white')
@@ -149,15 +149,12 @@ class Gridworld:
         self.frame.create_polygon(140, 250, 140, 360, 85, 305, 140, 250, fill='black')
         self.frame.create_text(125, 305, text=self.sr[10][4], font="Verdana 10 bold", fill='white')
 
-        self.frame.create_line(28, 30, 580, 30, 580, 580, 30, 580, 30, 30, fill='white', width=5)
-        self.frame.create_line(30, 140, 580, 140, fill='white', width=2)
-        self.frame.create_line(30, 250, 580, 250, fill='white', width=2)
-        self.frame.create_line(30, 360, 580, 360, fill='white', width=2)
-        self.frame.create_line(30, 470, 580, 470, fill='white', width=2)
-        self.frame.create_line(140, 30, 140, 580, fill='white', width=2)
-        self.frame.create_line(250, 30, 250, 580, fill='white', width=2)
-        self.frame.create_line(360, 30, 360, 580, fill='white', width=2)
-        self.frame.create_line(470, 30, 470, 580, fill='white', width=2)
+        #self.frame.create_line(28, 30, 470, 30, 470, 360, 30, 360, 30, 30, fill='white', width=5)
+        self.frame.create_line(30, 140, 470, 140, fill='white', width=2)
+        self.frame.create_line(30, 250, 470, 250, fill='white', width=2)
+        self.frame.create_line(140, 30, 140, 360, fill='white', width=2)
+        self.frame.create_line(250, 30, 250, 360, fill='white', width=2)
+        self.frame.create_line(360, 30, 360, 360, fill='white', width=2)
         self.frame.create_line(370, 150, 460, 150, 460, 240, 370, 240, 370, 150, fill='white', width=2)
         self.frame.create_line(30, 250, 140, 360, fill='white', width=2)
         self.frame.create_line(30, 140, 250, 360, fill='white', width=2)
