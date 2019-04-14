@@ -2,8 +2,8 @@
 class Agent:
 
   past_state = None
-  state = [0, 0, 0]
-  position = [0, 0]
+  state = [0, 4, 0]
+  position = [0, 4]
   policy = None
   bank_account = 0
   reward = 0
