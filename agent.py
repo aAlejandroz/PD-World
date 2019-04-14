@@ -2,7 +2,6 @@
 class Agent:
 
 
-
   def __init__(self):
     self.past_state = None
     self.state = [0, 4, 0]

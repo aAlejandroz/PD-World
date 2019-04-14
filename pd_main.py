@@ -37,6 +37,17 @@ agent = Agent()
 
 # ------------------------------ HELPER FUNCTIONS ------------------------------- #
 
+# calculates Q(a,s)
+def calculateQvalue(action, state):
+  row = state[0]
+  col = state[1]
+
+  hasBlock = True if state[2] == 1 else False
+  q_table = dropoff_q_table if hasBlock else pickup_q_table
+
+  return q_table[row][col][action.value]
+
+
 # calculates reward from action #
 def calculateRewardFromAction(action):
   negative_reward = ["NORTH", "EAST", "SOUTH", "WEST"]
@@ -179,7 +190,8 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states
   next_action = getPolicyAction(agent, next_state, next_possible_actions, pickup_states, dropoff_states)   # a' = next action in s'
 
   q_table = dropoff_q_table if agent.hasBlock() else pickup_q_table
-  q_value = q_table[row][col][action.value]
+  q_value = calculateQvalue(action, [row][col])
+  #q_value = q_table[row][col][action.value]
 
   q_table[row][col][action.value] = q_value + learning_rate * (reward + discount_rate *
                                                                 q_table[next_state[0]][next_state[1]][next_action.value] - q_value)
