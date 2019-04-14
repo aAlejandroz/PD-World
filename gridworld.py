@@ -37,8 +37,16 @@ class Gridworld:
         # self.frame.create_rectangle(30, 30, 470, 360, fill='sea green')
         # self.frame.create_rectangle(360, 140, 470, 250, fill='red')
 
-        self.frame.create_line(370, 40, 460, 40, 460, 130, 370, 130, 370, 40, fill='white', width=2)
-        self.frame.create_text(415, 85, text=self.sr[0][4], font="Verdana 10 bold", fill='white')
+        # Column 4 north
+        self.frame.create_text(415, 40, text=self.sr[1][4], font="Verdana 10 bold", fill='white')
+        # Column 4 east
+        self.frame.create_text(455, 85, text=self.sr[1][4], font="Verdana 10 bold", fill='white')
+        # Column 4 south
+        self.frame.create_text(415, 130, text=self.sr[1][4], font="Verdana 10 bold", fill='white')
+        # Column 4 west
+        self.frame.create_text(375, 85, text=self.sr[1][4], font="Verdana 10 bold", fill='white')
+
+        # self.frame.create_text(415, 85, text=self.sr[0][4], font="Verdana 10 bold", fill='white')
         self.frame.create_polygon(250, 30, 360, 30, 305, 85, 250, 30, fill='black')
         self.frame.create_text(305, 42, text=self.sr[1][1], font="Verdana 10 bold", fill='white')
 
@@ -54,6 +62,17 @@ class Gridworld:
         self.frame.create_text(565, 85, text=self.sr[1][4], font="Verdana 10 bold", fill='white')
         # Column 5 north
         self.frame.create_text(525, 45, text=self.sr[1][4], font="Verdana 10 bold", fill='white')
+
+
+        # Column 2 north
+        self.frame.create_text(195, 150, text=self.sr[1][4], font="Verdana 10 bold", fill='white')
+        # Column 2 east
+        self.frame.create_text(235, 195, text=self.sr[1][4], font="Verdana 10 bold", fill='white')
+        # Column 2 south
+        self.frame.create_text(195, 240, text=self.sr[1][4], font="Verdana 10 bold", fill='white')
+        # Column 2 east
+        self.frame.create_text(155, 195, text=self.sr[1][4], font="Verdana 10 bold", fill='white')
+
 
 
         self.frame.create_polygon(250, 30, 250, 140, 305, 85, 250, 30, fill='black')
@@ -86,8 +105,6 @@ class Gridworld:
         self.frame.create_polygon(140, 30, 140, 140, 85, 85, 140, 30, fill='black')
         self.frame.create_text(125, 85, text=self.sr[3][4], font="Verdana 10 bold", fill='white')
 
-        self.frame.create_text(415, 195, text=self.sr[4][1], font="Verdana 10 bold", fill='white')
-        self.frame.create_polygon(250, 140, 360, 140, 305, 195, 250, 140, fill='black')
 
         self.frame.create_text(305, 150, text=self.sr[5][1], font="Verdana 10 bold", fill='white')
 
@@ -169,7 +186,6 @@ class Gridworld:
         self.frame.create_line(250, 30, 250, 580, fill='white', width=2)
         self.frame.create_line(360, 30, 360, 580, fill='white', width=2)
         self.frame.create_line(470, 30, 470, 580, fill='white', width=2)
-        self.frame.create_line(370, 150, 460, 150, 460, 240, 370, 240, 370, 150, fill='white', width=2)
         self.frame.create_line(30, 250, 140, 360, fill='white', width=2)
         self.frame.create_line(30, 140, 250, 360, fill='white', width=2)
         self.frame.create_line(30, 30, 140, 140, fill='white', width=2)

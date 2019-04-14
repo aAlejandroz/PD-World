@@ -9,6 +9,7 @@ def create_grid(event=None):
     # Creates all vertical lines at intervals of 100
     for i in range(0, w, 100):
         c.create_line([(i, 0), (i, h)], tag='grid_line', fill = 'white')
+        #c.create_text()
 
     # Creates all horizontal lines at intervals of 100
     for i in range(0, h, 100):

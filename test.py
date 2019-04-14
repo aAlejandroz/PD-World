@@ -27,36 +27,46 @@ class GridWorld(Frame):
     # self.c.create_text(0 + 50, 0 + 90, text = 0.0, font="Verdana 8 bold", fill='white')
     # self.c.create_text(0 + 15, 0 + 50, text = 0.0, font="Verdana 8 bold", fill='white')
 
+    j = 0
     y_coordinate = 0
     for i in range(0, w, 100):
-      self.c.create_text(i + 50, y_coordinate + 10, text = self.sr[0][1], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 85, y_coordinate + 50, text = self.sr[0][2], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 50, y_coordinate + 90, text = self.sr[0][3], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 15, y_coordinate + 50, text = self.sr[0][4], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 50, y_coordinate + 10, text = self.sr[j][1], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 85, y_coordinate + 50, text = self.sr[j][2], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 50, y_coordinate + 90, text = self.sr[j][3], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 15, y_coordinate + 50, text = self.sr[j][4], font="Verdana 8 bold", fill='white')
+      j += 1
+
+
     y_coordinate = 100
     for i in range(0, w, 100):
-      self.c.create_text(i + 50, y_coordinate + 10, text = self.sr[1][1], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 85, y_coordinate + 50, text = self.sr[1][2], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 50, y_coordinate + 90, text = self.sr[1][3], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 15, y_coordinate + 50, text = self.sr[1][4], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 50, y_coordinate + 10, text = self.sr[j][1], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 85, y_coordinate + 50, text = self.sr[j][2], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 50, y_coordinate + 90, text = self.sr[j][3], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 15, y_coordinate + 50, text = self.sr[j][4], font="Verdana 8 bold", fill='white')
+
+
     y_coordinate = 200
     for i in range(0, w, 100):
-      self.c.create_text(i + 50, y_coordinate + 10, text = self.sr[2][1], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 85, y_coordinate + 50, text = self.sr[2][2], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 50, y_coordinate + 90, text = self.sr[2][3], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 15, y_coordinate + 50, text = self.sr[2][4], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 50, y_coordinate + 10, text = self.sr[j][1], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 85, y_coordinate + 50, text = self.sr[j][2], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 50, y_coordinate + 90, text = self.sr[j][3], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 15, y_coordinate + 50, text = self.sr[j][4], font="Verdana 8 bold", fill='white')
+
+
     y_coordinate = 300
     for i in range(0, w, 100):
-      self.c.create_text(i + 50, y_coordinate + 10, text = self.sr[3][1], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 85, y_coordinate + 50, text = self.sr[3][2], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 50, y_coordinate + 90, text = self.sr[3][3], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 15, y_coordinate + 50, text = self.sr[3][4], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 50, y_coordinate + 10, text = self.sr[j][1], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 85, y_coordinate + 50, text = self.sr[j][2], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 50, y_coordinate + 90, text = self.sr[j][3], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 15, y_coordinate + 50, text = self.sr[j][4], font="Verdana 8 bold", fill='white')
+
+
     y_coordinate = 400
     for i in range(0, w, 100):
-      self.c.create_text(i + 50, y_coordinate + 10, text = self.sr[4][1], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 85, y_coordinate + 50, text = self.sr[4][2], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 50, y_coordinate + 90, text = self.sr[4][3], font="Verdana 8 bold", fill='white')
-      self.c.create_text(i + 15, y_coordinate + 50, text = self.sr[4][4], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 50, y_coordinate + 10, text = self.sr[j][1], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 85, y_coordinate + 50, text = self.sr[j][2], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 50, y_coordinate + 90, text = self.sr[j][3], font="Verdana 8 bold", fill='white')
+      self.c.create_text(i + 15, y_coordinate + 50, text = self.sr[j][4], font="Verdana 8 bold", fill='white')
     
 
 
