@@ -43,7 +43,7 @@ class GridWorld(Frame):
       self.c.create_text(i + 85, y_coordinate + 50, text = self.sr[j][2], font="Verdana 8 bold", fill='white')
       self.c.create_text(i + 50, y_coordinate + 90, text = self.sr[j][3], font="Verdana 8 bold", fill='white')
       self.c.create_text(i + 15, y_coordinate + 50, text = self.sr[j][4], font="Verdana 8 bold", fill='white')
-
+      j += 1
 
     y_coordinate = 200
     for i in range(0, w, 100):
@@ -51,7 +51,7 @@ class GridWorld(Frame):
       self.c.create_text(i + 85, y_coordinate + 50, text = self.sr[j][2], font="Verdana 8 bold", fill='white')
       self.c.create_text(i + 50, y_coordinate + 90, text = self.sr[j][3], font="Verdana 8 bold", fill='white')
       self.c.create_text(i + 15, y_coordinate + 50, text = self.sr[j][4], font="Verdana 8 bold", fill='white')
-
+      j += 1
 
     y_coordinate = 300
     for i in range(0, w, 100):
@@ -59,7 +59,7 @@ class GridWorld(Frame):
       self.c.create_text(i + 85, y_coordinate + 50, text = self.sr[j][2], font="Verdana 8 bold", fill='white')
       self.c.create_text(i + 50, y_coordinate + 90, text = self.sr[j][3], font="Verdana 8 bold", fill='white')
       self.c.create_text(i + 15, y_coordinate + 50, text = self.sr[j][4], font="Verdana 8 bold", fill='white')
-
+      j += 1
 
     y_coordinate = 400
     for i in range(0, w, 100):
@@ -67,7 +67,7 @@ class GridWorld(Frame):
       self.c.create_text(i + 85, y_coordinate + 50, text = self.sr[j][2], font="Verdana 8 bold", fill='white')
       self.c.create_text(i + 50, y_coordinate + 90, text = self.sr[j][3], font="Verdana 8 bold", fill='white')
       self.c.create_text(i + 15, y_coordinate + 50, text = self.sr[j][4], font="Verdana 8 bold", fill='white')
-    
+      j += 1
 
 
   def init_zeros(self):
@@ -85,10 +85,10 @@ class GridWorld(Frame):
 class Main(GridWorld):
   def __init__(self):
     master = Tk()
-    
+
     master.resizable(width = True, height = True)
-    
+
     app = GridWorld(master)
     app.mainloop()
-    
+
 Main()
