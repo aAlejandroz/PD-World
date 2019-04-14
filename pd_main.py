@@ -2,9 +2,6 @@ from agent import Agent
 from policies import *
 from cell_methods import *
 from RL_updates import *
-
-from grid_cells import Cells
-import random
 import copy
 import enum
 import numpy as np
@@ -316,5 +313,31 @@ def experiment_5():
 
 #--------- MAIN ----------#
 if __name__ == '__main__':
-  print()
-  experiment_1()
+
+  while True:
+
+    try:
+      experiment_num = int(input("Choose Experiemnt 1 - 5 by entering the corresponding number -  \n" ))
+
+    except ValueError:
+      print("Did not enter a number. Try again")
+    else:
+      if experiment_num == 1:
+        print("|----------------Running Experiment 1----------------| \n")
+        experiment_1()
+      elif experiment_num == 2:
+        print("|----------------Running Experiment 2----------------|\n")
+        experiment_2()
+      elif experiment_num == 3:
+        print("|----------------Running Experiment 3----------------|\n")
+        experiment_3()
+      elif experiment_num == 4:
+        print("|----------------Running Experiment 4----------------|\n")
+        experiments_4()
+      elif experiment_num == 5:
+        print("|----------------Running Experiment 5----------------|\n")
+        experiment_5()
+
+      print()
+
+
