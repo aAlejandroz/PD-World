@@ -157,9 +157,13 @@ def getPolicyAction(agent, state, possible_actions):
   if pos in pickup_states and state[2] == 0 and not cell.is_empty():
     action = actions.PICKUP
     decrementNumBlocksInCell(pos)
+    print('\nAgent picked up a block')
+    print(f'Pickup cell {cell.position} = {cell.num_of_blocks}')
   elif pos in dropoff_states and state[2] == 1 and not cell.is_full():
     action = actions.DROP
     incrementNumBlocksInCell(pos)
+    print('\nAgent dropped up a block')
+    print(f'Drop off cell {cell.position} = {cell.num_of_blocks}')
   else:                                                 # directional move
     if agent.policy == "PRandom":
       action = actions(PRandom(possible_actions))
