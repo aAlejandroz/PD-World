@@ -33,14 +33,14 @@ dropoff_q_table = [ [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]]
 
 pickup_states = [[0, 0], [2, 2], [4, 4]]
-dropoff_states = [[1,4], [4, 0], [4, 2]]
+dropoff_states = [[1, 4], [4, 0], [4, 2]]
 pickup_cells = []   # list of pickup cells
 dropoff_cells = []  # list of drop off cells
 
 for pos in pickup_states:
   pickup_cells.append(Cells(pos, 5))
 
-for pos in pickup_states:
+for pos in dropoff_states:
   dropoff_cells.append(Cells(pos, 0))
 
 agent = Agent()
@@ -52,18 +52,15 @@ discount_rate = 1
 
 # decrement blocks on cell #
 def decrementNumBlocksInCell(pos):
-  for cell in pickup_cells:
-    if cell.position == pos:
-      cell.num_of_blocks -= 1
-      return
+  cell = getCellFromPosition(pos, pickup_cells)
+  cell.num_of_blocks -= 1
 
 
 # increment blocks on cell #
 def incrementNumBlocksInCell(pos):
-  for cell in dropoff_cells:
-    if cell.position == pos:
-      cell.num_of_blocks += 1
-      return
+  cell = getCellFromPosition(pos, dropoff_cells)
+  cell.num_of_blocks += 1
+
 
 # --------------------------------- POLICIES --------------------------------- #
 
@@ -138,6 +135,12 @@ def calculateRewardFromAction(action):
 
   return reward
 
+# returns the cell object in the given position
+def getCellFromPosition(pos, cell_list):
+  for cell in cell_list:
+    if cell.position == pos:
+      return cell
+
 
 # returns action enum given agent's policy and possible actions #
 def getPolicyAction(agent, state, possible_actions):
@@ -145,13 +148,19 @@ def getPolicyAction(agent, state, possible_actions):
   col = state[1]
   pos = [row, col]
 
-  if pos in pickup_states and state[2] == 0:      # pickup
+  # finds pickup or dropoff cell if position is a pickup or dropoff state
+  if pos in pickup_states:
+    cell = getCellFromPosition(pos, pickup_cells)
+  elif pos in dropoff_states:
+    cell = getCellFromPosition(pos, dropoff_cells)
+
+  if pos in pickup_states and state[2] == 0 and not cell.is_empty():
     action = actions.PICKUP
     decrementNumBlocksInCell(pos)
-  elif pos in dropoff_states and state[2] == 1:   # drop off
+  elif pos in dropoff_states and state[2] == 1 and not cell.is_full():
     action = actions.DROP
     incrementNumBlocksInCell(pos)
-  else:                                           # directional move
+  else:                                                 # directional move
     if agent.policy == "PRandom":
       action = actions(PRandom(possible_actions))
     if agent.policy == "PExploit":
@@ -287,6 +296,13 @@ def experiment_1():
       print(dropoff_q_table[row][column], end=" ")
     print()
 
+  print("\nPickup states: ")
+  for i in range(3):
+    print("pickup state ", i, ": ", pickup_cells[i].num_of_blocks)
+
+  print("\nDropoff states: ")
+  for i in range(3):
+    print("Dropoff state ", i, ": ", dropoff_cells[i].num_of_blocks)
 
 def experiment_2():
   learning_rate = 0.3
