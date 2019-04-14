@@ -1,19 +1,24 @@
 # class for agent
 class Agent:
 
-  past_state = None
-  state = [0, 4, 0]
-  position = [0, 4]
-  policy = None
-  bank_account = 0
-  reward = 0
-  num_operators = 0
+
 
   def __init__(self):
-    state = [0, 4, 0] #[row, column, block]
-    policy = None
-    bank_account = 0
-    num_operators = 0
+    self.past_state = None
+    self.state = [0, 4, 0]
+    self.position = [0, 4]
+    self.policy = None
+    self.bank_account = 0
+    self.reward = 0
+    self.num_operators = 0
+
+  def initialize(self):
+    self.past_state = None
+    self.state = [0, 4, 0]  # [row, column, block]
+    self.position = [0, 4]
+    self.bank_account = 0
+    self.reward = 0
+    self.num_operators = 0
 
   def updateRewards(self, reward):
     self.reward = reward
