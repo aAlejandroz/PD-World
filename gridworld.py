@@ -42,8 +42,19 @@ class Gridworld:
         self.frame.create_polygon(250, 30, 360, 30, 305, 85, 250, 30, fill='black')
         self.frame.create_text(305, 42, text=self.sr[1][1], font="Verdana 10 bold", fill='white')
 
+        # column 3 south
         self.frame.create_polygon(250, 140, 360, 140, 305, 85, 250, 140, fill='black')
         self.frame.create_text(305, 130, text=self.sr[1][2], font="Verdana 10 bold", fill='white')
+
+        # Column 5 south
+        self.frame.create_text(525, 130, text=self.sr[1][4], font="Verdana 10 bold", fill='white')
+        # Column 5 west
+        self.frame.create_text(485, 85, text=self.sr[1][4], font="Verdana 10 bold", fill='white')
+        # Column 5 east
+        self.frame.create_text(565, 85, text=self.sr[1][4], font="Verdana 10 bold", fill='white')
+        # Column 5 north
+        self.frame.create_text(525, 45, text=self.sr[1][4], font="Verdana 10 bold", fill='white')
+
 
         self.frame.create_polygon(250, 30, 250, 140, 305, 85, 250, 30, fill='black')
         self.frame.create_text(265, 85, text=self.sr[1][3], font="Verdana 10 bold", fill='white')
