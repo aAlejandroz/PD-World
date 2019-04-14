@@ -1,5 +1,6 @@
 from tkinter import *
 import numpy as np
+import  time
 
 class GridWorld(Frame):
 
@@ -8,16 +9,15 @@ class GridWorld(Frame):
     Frame.__init__(self, self.master)
     self.c = Canvas(self.master,  height=500, width=500, bg='black')
     self.sr = []
+    self.agent_data = {"x" : 0, "y" : 0, "item" : None}
     self.init_zeros()
     self.create_grid()
     self.update_gird_numbs()
     self.agent = ()
-    self.coords = [[70, 290], [180, 290], [290, 290], [400, 290], [70, 180], [290, 180], [400, 180], [70, 70],
-                  [180, 70], [290, 70], [400, 70]]
     self.create_agent()
     self.c.bind("<Key>", self.key)
     self.c.bind("<Button-1>", self.callback)
-    
+    self.move_agent()
     self.c.pack(fill = BOTH, expand=True)
 
   def create_grid(self):
@@ -79,13 +79,19 @@ class GridWorld(Frame):
       j += 1
 
   def create_agent(self):
-    
-    self.agent = self.c.create_oval(435, 35, 460, 60, fill='cyan')
+    self.agent = self.c.create_oval(434, 34, 464, 64, fill='cyan', tags='Agent')
+    self.agent_data["item"] = self.c.find_closest(448, 47)[0]
+  
   def key(self, event):
     print ("pressed", repr(event.char))
   
   def callback(self, event):
     print ("clicked at", event.x, event.y)
+
+  def move_agent(self):
+    # self.c.move(self.agent_data['item'], -300, 0)
+    self.c.move(self.agent_data['item'], 0, 400)
+    pass
 
 
 class Main(GridWorld):
