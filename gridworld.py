@@ -6,6 +6,7 @@ from pd_main import *
 
 class GridWorld(Frame):
 
+
   def __init__(self, master=None):
     self.master = master
     Frame.__init__(self, self.master)
@@ -19,13 +20,61 @@ class GridWorld(Frame):
     self.create_agent()
     self.c.bind("<Key>", self.key)
     self.c.bind("<Button-1>", self.callback)
-    self.master.bind("<space>", lambda e: self.experiment_1())
+    self.master.bind("1", lambda e: self.experiment_1())
+    self.master.bind("2", lambda e: self.experiment_2())
+    self.master.bind("3", lambda e: self.experiment_3())
+    self.master.bind("4", lambda e: self.experiment_4())
+    self.master.bind("5", lambda e: self.experiment_5())
+
+
+
     self.c.pack(fill=BOTH, expand=True)
 
   def create_grid(self):
     w = 500
     h = 500
     self.c.delete('grid_line')
+    y_coordinate = 0
+    for i in range(0, 500, 100):
+      self.c.create_polygon(i, y_coordinate, i + 100, y_coordinate, i + 50, y_coordinate + 50, i, y_coordinate)
+      self.c.create_polygon(i + 100, y_coordinate, i + 100, y_coordinate + 100, i + 50, y_coordinate + 50, i + 100,
+                            y_coordinate)
+      self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
+      self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
+    y_coordinate = 100
+    for i in range(0, 500, 100):
+      self.c.create_polygon(i, y_coordinate, i + 100, y_coordinate, i + 50, y_coordinate + 50, i, y_coordinate)
+      self.c.create_polygon(i + 100, y_coordinate, i + 100, y_coordinate + 100, i + 50, y_coordinate + 50, i + 100,
+                            y_coordinate)
+      self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
+      self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
+    y_coordinate = 200
+    for i in range(0, 500, 100):
+      self.c.create_polygon(i, y_coordinate, i + 100, y_coordinate, i + 50, y_coordinate + 50, i, y_coordinate)
+      self.c.create_polygon(i + 100, y_coordinate, i + 100, y_coordinate + 100, i + 50, y_coordinate + 50, i + 100,
+                            y_coordinate)
+      self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
+      self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
+    y_coordinate = 300
+    for i in range(0, 500, 100):
+      self.c.create_polygon(i, y_coordinate, i + 100, y_coordinate, i + 50, y_coordinate + 50, i, y_coordinate)
+      self.c.create_polygon(i + 100, y_coordinate, i + 100, y_coordinate + 100, i + 50, y_coordinate + 50, i + 100,
+                            y_coordinate)
+      self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
+      self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
+    y_coordinate = 400
+    for i in range(0, 500, 100):
+      self.c.create_polygon(i, y_coordinate, i + 100, y_coordinate, i + 50, y_coordinate + 50, i, y_coordinate)
+      self.c.create_polygon(i + 100, y_coordinate, i + 100, y_coordinate + 100, i + 50, y_coordinate + 50, i + 100,
+                            y_coordinate)
+      self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
+      self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
+
+    for i in range(0, 600, 100):
+      self.c.create_line([(i, 0), (i, h)], tag='grid_line', fill='white')
+
+    for i in range(0, 600, 100):
+      self.c.create_line([(0, i), (w, i)], tag='grid_line', fill='white')
     self.c.create_rectangle(0, 0, 100, 100, fill="sea green")
     self.c.create_rectangle(200, 200, 300, 300, fill="sea green")
     self.c.create_rectangle(400, 400, 500, 500, fill="sea green")
@@ -33,37 +82,6 @@ class GridWorld(Frame):
     self.c.create_rectangle(400, 100, 500, 200, fill="dark orange")
     self.c.create_rectangle(300, 400, 200, 500, fill="dark orange")
     self.c.create_rectangle(0, 400, 100, 500, fill="dark orange")
-    y_coordinate = 0
-    for i in range(0, 500, 100):
-        self.c.create_line(i+40, y_coordinate+50,i+60, y_coordinate+50, fill='white', width=1, arrow=FIRST)
-    y_coordinate = 100
-    for i in range(0, 500, 100):
-        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST)
-    y_coordinate = 200
-    for i in range(0, 500, 100):
-        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST)
-    y_coordinate = 300
-    for i in range(0, 500, 100):
-        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST)
-    y_coordinate = 400
-    for i in range(0, 500, 100):
-        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST)
-
-    for i in range(0, 600, 100):
-      self.c.create_line([(i, 0), (i, h)], tag='grid_line', fill='white')
-
-    for i in range(0, 600, 100):
-      self.c.create_line([(0, i), (w, i)], tag='grid_line', fill='white')
-
-  def init_zeros(self):
-    s = 0
-    x = 25
-    y = 5
-    self.sr = np.zeros([x, y], dtype=np.object)
-    for x in range(25):
-      self.sr[:, 1:] = float(0)
-      self.sr[x][0] = s
-      s = s + 1
 
   def update_gird_numbs(self):
     global pickup_q_table
@@ -85,6 +103,9 @@ class GridWorld(Frame):
                          fill='white', tags='nums')
       self.c.create_text(i + 15, y_coordinate + 50, text=q_table[row][column][3], font="Verdana 8 bold",
                          fill='white', tags='nums', angle=90)
+
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       column += 1
     y_coordinate = 100
     row = 1
@@ -98,6 +119,8 @@ class GridWorld(Frame):
                          fill='white', tags='nums')
       self.c.create_text(i + 15, y_coordinate + 50, text=q_table[row][column][3], font="Verdana 8 bold",
                          fill='white', tags='nums', angle=90)
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       column += 1
     y_coordinate = 200
     row = 2
@@ -111,6 +134,8 @@ class GridWorld(Frame):
                          fill='white', tags='nums')
       self.c.create_text(i + 15, y_coordinate + 50, text=q_table[row][column][3], font="Verdana 8 bold",
                          fill='white', tags='nums', angle=90)
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       column += 1
     y_coordinate = 300
     row = 3
@@ -124,6 +149,8 @@ class GridWorld(Frame):
                          fill='white', tags='nums')
       self.c.create_text(i + 15, y_coordinate + 50, text=q_table[row][column][3], font="Verdana 8 bold",
                          fill='white', tags='nums', angle=90)
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       column += 1
     y_coordinate = 400
     row = 4
@@ -137,8 +164,12 @@ class GridWorld(Frame):
                          fill='white', tags='nums')
       self.c.create_text(i + 15, y_coordinate + 50, text= q_table[row][column][3], font="Verdana 8 bold",
                          fill='white', tags='nums', angle=90)
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       column += 1
 
+  # TODO: Agent disappears after he is reinitialized
+  # TODO: Numbers stop updating after q_table is reinitialized
   def create_agent(self):
     self.agent = self.c.create_oval(434, 34, 464, 64, fill='cyan', tags='Agent')
     self.agent_data["item"] = self.c.find_closest(448, 47)[0]
@@ -148,6 +179,16 @@ class GridWorld(Frame):
 
   def callback(self, event):
     print("clicked at", event.x, event.y)
+
+  def delete_nums(self):
+    self.c.delete("nums")
+
+  def moveAndUpdateAgent(self):
+    time.sleep(0.2)
+    self.move_agent(agent.action)
+    self.delete_nums()
+    self.update_gird_numbs()
+    self.master.update()
 
   def experiment_1(self):
 
@@ -162,26 +203,17 @@ class GridWorld(Frame):
     for index in range(4000):
       agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      time.sleep(0.2)
-      self.move_agent(agent.action)
-      self.delete_nums()
-      self.update_gird_numbs()
-      self.master.update()
+      self.moveAndUpdateAgent()
 
     # TODO Where we display the Q_table
+    print("\nGREEDY ALGORITHM\n")
 
     for index in range(4000):
       agent.policy = "PGreedy"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      time.sleep(0.2)
-      self.move_agent(agent.action)
-      self.delete_nums()
-      self.update_gird_numbs()
-      self.master.update()
+      self.moveAndUpdateAgent()
 
     print("FINISH")
-
-    initialize_Q_table()
 
   def experiment_2(self):
     learning_rate = 0.3
@@ -192,28 +224,94 @@ class GridWorld(Frame):
 
     initalizeCells(pickup_states, dropoff_states)
 
+    agent.policy = "PRandom"
     for index in range(200):
-      agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      time.sleep(0.35)
-      self.move_agent(agent.action)
-      self.delete_nums()
-      self.update_gird_numbs()
-      self.master.update()
+      self.moveAndUpdateAgent()
 
+    agent.policy = "PExploit"
     for index in range(7800):
-      agent.policy = "PExploit"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      time.sleep(0.35)
-      self.move_agent(agent.action)
-      self.delete_nums()
-      self.update_gird_numbs()
-      self.master.update()
+      self.moveAndUpdateAgent()
 
     print("FINISH")
 
-    initialize_Q_table()
+    # initialize_Q_table()
 
+  def experiment_3(self):
+    learning_rate = 0.3
+    discount_rate = 0.5
+
+    pickup_states = [[0, 0], [2, 2], [4, 4]]
+    dropoff_states = [[1, 4], [4, 0], [4, 2]]
+
+    initalizeCells(pickup_states, dropoff_states)
+
+    agent.policy = "PRandom"
+    next_action = SARSA_update(learning_rate, discount_rate, None, agent, pickup_states, dropoff_states)
+    self.moveAndUpdateAgent()
+
+    for index in range(200):
+      next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
+      self.moveAndUpdateAgent()
+
+    agent.policy = "PExploit"
+    for index in range(7800):
+      next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
+      self.moveAndUpdateAgent()
+
+    print("FINISH")
+
+  def experiments_4(self):
+    learning_rate = 0.3
+    discount_rate = 1
+
+    pickup_states = [[0, 0], [2, 2], [4, 4]]
+    dropoff_states = [[1, 4], [4, 0], [4, 2]]
+
+    initalizeCells(pickup_states, dropoff_states)
+
+    agent.policy = "PRandom"
+    next_action = SARSA_update(learning_rate, discount_rate, None, agent, pickup_states, dropoff_states)
+    self.moveAndUpdateAgent()
+
+    for index in range(200):
+      next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
+      self.moveAndUpdateAgent()
+
+    # TODO Display and interpret the Q-table
+
+    agent.policy = "PExploit"
+    for index in range(7800):
+      next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
+      self.moveAndUpdateAgent()
+
+    # TODO final Q_table
+
+    print("FINISH")
+
+  def experiment_5(self):
+    learning_rate = 0.3
+    discount_rate = 0.5
+
+    pickup_states = [[1, 4], [4, 0], [4, 2]]
+    dropoff_states = [[0, 0], [2, 2], [4, 4]]
+
+    initalizeCells(pickup_states, dropoff_states)
+
+    agent.policy = "PRandom"
+    for index in range(200):
+      Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
+      self.moveAndUpdateAgent()
+
+    # TODO Display and interpret the Q-table
+
+    agent.policy = "PExploit"
+    for index in range(7800):
+      Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
+      self.moveAndUpdateAgent()
+
+    print("FINISH")
 
   def move_agent(self, action):
 
@@ -227,10 +325,6 @@ class GridWorld(Frame):
       self.c.move(self.agent_data['item'], -100, 0)
 
     self.master.update()
-
-
-  def delete_nums(self):
-    self.c.delete("nums")
 
 
 class Main(GridWorld):
