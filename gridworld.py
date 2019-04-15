@@ -32,19 +32,19 @@ class GridWorld(Frame):
     self.c.create_rectangle(0, 400, 100, 500, fill="dark orange")
     y_coordinate = 0
     for i in range(0, 500, 100):
-      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST, tags='nums')
+      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='red', width=1, arrow=FIRST, tags='nums')
     y_coordinate = 100
     for i in range(0, 500, 100):
-      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST, tags='nums')
+      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='red', width=1, arrow=FIRST, tags='nums')
     y_coordinate = 200
     for i in range(0, 500, 100):
-      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST, tags='nums')
+      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='red', width=1, arrow=FIRST, tags='nums')
     y_coordinate = 300
     for i in range(0, 500, 100):
-      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST, tags='nums')
+      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='red', width=1, arrow=FIRST, tags='nums')
     y_coordinate = 400
     for i in range(0, 500, 100):
-      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST, tags ='nums')
+      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='red', width=1, arrow=FIRST, tags ='nums')
 
     for i in range(0, 600, 100):
       self.c.create_line([(i, 0), (i, h)], tag='grid_line', fill='white')
@@ -65,35 +65,63 @@ class GridWorld(Frame):
     y_coordinate = 0
     for i in range(0,500,100):
       direction = self.get_max_q_value(row,column,q_table)
-      if(direction == 0):
-        self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif(direction == 1):
-        self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif(direction == 2):
-        self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif(direction == 3):
-        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
+      if(q_table[row][column][direction] > 2.25):
+        if(direction == 0):
+          self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='green2', width=1, arrow=FIRST,
+                             tags='nums')
+        elif(direction == 1):
+          self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='green2', width=1, arrow=FIRST,
+                             tags='nums')
+        elif(direction == 2):
+          self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='green2', width=1, arrow=FIRST,
+                             tags='nums')
+        elif(direction == 3):
+          self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='green2', width=1, arrow=FIRST,
+                             tags='nums')
+      else:
+        if (direction == 0):
+          self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 1):
+          self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 2):
+          self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 3):
+          self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
       column += 1
     row = 1
     column = 0
     y_coordinate = 100
     for i in range(0, 500, 100):
       direction = self.get_max_q_value(row, column, q_table)
-      if (direction == 0):
-        self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
+      if (q_table[row][column][direction] > 2.25):
+        if (direction == 0):
+          self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='green2', width=1, arrow=FIRST,
                              tags='nums')
-      elif (direction == 1):
-        self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
+        elif (direction == 1):
+          self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='green2', width=1, arrow=FIRST,
                              tags='nums')
-      elif (direction == 2):
-        self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
+        elif (direction == 2):
+          self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='green2', width=1, arrow=FIRST,
                              tags='nums')
-      elif (direction == 3):
-        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
+        elif (direction == 3):
+          self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='green2', width=1, arrow=FIRST,
+                             tags='nums')
+      else:
+        if (direction == 0):
+          self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 1):
+          self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 2):
+          self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 3):
+          self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
                              tags='nums')
       column += 1
     row = 2
@@ -101,17 +129,31 @@ class GridWorld(Frame):
     y_coordinate = 200
     for i in range(0, 500, 100):
       direction = self.get_max_q_value(row, column, q_table)
-      if (direction == 0):
-        self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
+      if (q_table[row][column][direction] > 2.25):
+        if (direction == 0):
+          self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='green2', width=1, arrow=FIRST,
                              tags='nums')
-      elif (direction == 1):
-        self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
+        elif (direction == 1):
+          self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='green2', width=1, arrow=FIRST,
                              tags='nums')
-      elif (direction == 2):
-        self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
+        elif (direction == 2):
+          self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='green2', width=1, arrow=FIRST,
                              tags='nums')
-      elif (direction == 3):
-        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
+        elif (direction == 3):
+          self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='green2', width=1, arrow=FIRST,
+                             tags='nums')
+      else:
+        if (direction == 0):
+          self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 1):
+          self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 2):
+          self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 3):
+          self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
                              tags='nums')
       column += 1
     row = 3
@@ -119,42 +161,69 @@ class GridWorld(Frame):
     y_coordinate = 300
     for i in range(0, 500, 100):
       direction = self.get_max_q_value(row, column, q_table)
-      if (direction == 0):
-        self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif (direction == 1):
-        self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif (direction == 2):
-        self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif (direction == 3):
-        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
+      if (q_table[row][column][direction] > 2.25):
+        if (direction == 0):
+          self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='green2', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 1):
+          self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='green2', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 2):
+          self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='green2', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 3):
+          self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='green2', width=1, arrow=FIRST,
+                             tags='nums')
+      else:
+        if (direction == 0):
+          self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 1):
+          self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 2):
+          self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 3):
+          self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
       column += 1
     row = 4
     column = 0
     y_coordinate = 400
     for i in range(0, 500, 100):
       direction = self.get_max_q_value(row, column, q_table)
-      if (direction == 0):
-        self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif (direction == 1):
-        self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif (direction == 2):
-        self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif (direction == 3):
-        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
+      if (q_table[row][column][direction] > 2.25):
+        if (direction == 0):
+          self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='green2', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 1):
+          self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='green2', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 2):
+          self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='green2', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 3):
+          self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='green2', width=1, arrow=FIRST,
+                             tags='nums')
+      else:
+        if (direction == 0):
+          self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 1):
+          self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 2):
+          self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
+        elif (direction == 3):
+          self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
+                             tags='nums')
       column += 1
 
-
   def get_max_q_value(self, x, y, table):
-    max = table[x][y][0]
-    index = 0
+    max = table[x][y][3]
+    index = 3
     for i in range(4):
       if(table[x][y][i] > max):
         max = table[x][y][i]
@@ -264,7 +333,7 @@ class GridWorld(Frame):
     for index in range(4000):
       agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      time.sleep(0.5)
+      # time.sleep(0.1)
       self.moveAndUpdateAgent()
 
     # TODO Where we display the Q_table
@@ -272,7 +341,7 @@ class GridWorld(Frame):
     for index in range(4000):
       agent.policy = "PGreedy"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      time.sleep(0.5)
+      # time.sleep(0.1)
       self.moveAndUpdateAgent()
 
     print("FINISH")
