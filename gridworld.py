@@ -155,6 +155,9 @@ class GridWorld(Frame):
       self.update_gird_numbs()
       self.master.update()
 
+    print("FINISH")
+    initialize_Q_table()
+
 
   def move_agent(self):
     for i in range(4):

@@ -240,7 +240,7 @@ def Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_state
   old_value = q_table[row][col][action.value]
   next_max = np.max(q_table[new_row][new_col])
   new_q_value = (1 - learning_rate) * old_value + learning_rate * (agent.reward + discount_rate * next_max)
-  q_table[row][col][action.value] = new_q_value
+  q_table[row][col][action.value] = round(new_q_value, 2)
 
   agent.updateState(next_state)
   agent.updatePosition()
@@ -282,8 +282,10 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states
   q_table = dropoff_q_table if agent.hasBlock() else pickup_q_table
   old_value = q_table[row][col][action.value]
 
-  q_table[row][col][action.value] = old_value + learning_rate * (reward + discount_rate *
+  new_q_value = old_value + learning_rate * (reward + discount_rate *
                                                                 q_table[next_state[0]][next_state[1]][next_action.value] - old_value)
+
+  q_table[row][col][action.value] = round(new_q_value, 2)
 
   agent.updateState(next_state)
   agent.updatePosition()
