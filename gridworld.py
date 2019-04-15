@@ -51,71 +51,76 @@ class GridWorld(Frame):
 
   def update_gird_numbs(self):
     global pickup_q_table
+    global dropoff_q_table
+    global agent
+
+    q_table = dropoff_q_table if agent.hasBlock() else pickup_q_table
+    
     row = 0
     column = 0
     y_coordinate = 0
 
     for i in range(0, 500, 100):
-      self.c.create_text(i + 50, y_coordinate + 10, text=pickup_q_table[row][column][0], font="Verdana 8 bold",
+      self.c.create_text(i + 50, y_coordinate + 10, text=q_table[row][column][0], font="Verdana 8 bold",
                          fill='white', tags='nums')
-      self.c.create_text(i + 85, y_coordinate + 50, text=pickup_q_table[row][column][1], font="Verdana 8 bold",
+      self.c.create_text(i + 85, y_coordinate + 50, text=q_table[row][column][1], font="Verdana 8 bold",
+                         fill='white', tags='nums', angle=90)
+      self.c.create_text(i + 50, y_coordinate + 90, text=q_table[row][column][2], font="Verdana 8 bold",
                          fill='white', tags='nums')
-      self.c.create_text(i + 50, y_coordinate + 90, text=pickup_q_table[row][column][2], font="Verdana 8 bold",
-                         fill='white', tags='nums')
-      self.c.create_text(i + 15, y_coordinate + 50, text=pickup_q_table[row][column][3], font="Verdana 8 bold",
-                         fill='white', tags='nums')
+      self.c.create_text(i + 15, y_coordinate + 50, text=q_table[row][column][3], font="Verdana 8 bold",
+                         fill='white', tags='nums', angle=90)
       column += 1
     y_coordinate = 100
     row = 1
     column = 0
     for i in range(0, 500, 100):
-      self.c.create_text(i + 50, y_coordinate + 10, text=pickup_q_table[row][column][0], font="Verdana 8 bold",
+      self.c.create_text(i + 50, y_coordinate + 10, text=q_table[row][column][0], font="Verdana 8 bold",
                          fill='white', tags='nums')
-      self.c.create_text(i + 85, y_coordinate + 50, text=pickup_q_table[row][column][1], font="Verdana 8 bold",
+      self.c.create_text(i + 85, y_coordinate + 50, text=q_table[row][column][1], font="Verdana 8 bold",
+                         fill='white', tags='nums', angle=90)
+      self.c.create_text(i + 50, y_coordinate + 90, text=q_table[row][column][2], font="Verdana 8 bold",
                          fill='white', tags='nums')
-      self.c.create_text(i + 50, y_coordinate + 90, text=pickup_q_table[row][column][2], font="Verdana 8 bold",
-                         fill='white', tags='nums')
-      self.c.create_text(i + 15, y_coordinate + 50, text=pickup_q_table[row][column][3], font="Verdana 8 bold",
-                         fill='white', tags='nums')
+      self.c.create_text(i + 15, y_coordinate + 50, text=q_table[row][column][3], font="Verdana 8 bold",
+                         fill='white', tags='nums', angle=90)
       column += 1
     y_coordinate = 200
     row = 2
     column = 0
     for i in range(0, 500, 100):
-      self.c.create_text(i + 50, y_coordinate + 10, text=pickup_q_table[row][column][0], font="Verdana 8 bold",
+      self.c.create_text(i + 50, y_coordinate + 10, text=q_table[row][column][0], font="Verdana 8 bold",
                          fill='white', tags='nums')
-      self.c.create_text(i + 85, y_coordinate + 50, text=pickup_q_table[row][column][1], font="Verdana 8 bold",
+      self.c.create_text(i + 85, y_coordinate + 50, text=q_table[row][column][1], font="Verdana 8 bold",
+                         fill='white', tags='nums', angle=90)
+      self.c.create_text(i + 50, y_coordinate + 90, text=q_table[row][column][2], font="Verdana 8 bold",
                          fill='white', tags='nums')
-      self.c.create_text(i + 50, y_coordinate + 90, text=pickup_q_table[row][column][2], font="Verdana 8 bold",
-                         fill='white', tags='nums')
-      self.c.create_text(i + 15, y_coordinate + 50, text=pickup_q_table[row][column][3], font="Verdana 8 bold",
-                         fill='white', tags='nums')
+      self.c.create_text(i + 15, y_coordinate + 50, text=q_table[row][column][3], font="Verdana 8 bold",
+                         fill='white', tags='nums', angle=90)
       column += 1
     y_coordinate = 300
     row = 3
     column = 0
     for i in range(0, 500, 100):
-      self.c.create_text(i + 50, y_coordinate + 10, text=pickup_q_table[row][column][0], font="Verdana 8 bold",
+      self.c.create_text(i + 50, y_coordinate + 10, text=q_table[row][column][0], font="Verdana 8 bold",
                          fill='white', tags='nums')
-      self.c.create_text(i + 85, y_coordinate + 50, text=pickup_q_table[row][column][1], font="Verdana 8 bold",
+      self.c.create_text(i + 85, y_coordinate + 50, text=q_table[row][column][1], font="Verdana 8 bold",
+                         fill='white', tags='nums', angle=90)
+      self.c.create_text(i + 50, y_coordinate + 90, text=q_table[row][column][2], font="Verdana 8 bold",
                          fill='white', tags='nums')
-      self.c.create_text(i + 50, y_coordinate + 90, text=pickup_q_table[row][column][2], font="Verdana 8 bold",
-                         fill='white', tags='nums')
-      self.c.create_text(i + 15, y_coordinate + 50, text=pickup_q_table[row][column][3], font="Verdana 8 bold",
-                         fill='white', tags='nums')
+      self.c.create_text(i + 15, y_coordinate + 50, text=q_table[row][column][3], font="Verdana 8 bold",
+                         fill='white', tags='nums', angle=90)
       column += 1
     y_coordinate = 400
     row = 4
     column = 0
     for i in range(0, 500, 100):
-      self.c.create_text(i + 50, y_coordinate + 10, text= pickup_q_table[row][column][0], font="Verdana 8 bold",
+      self.c.create_text(i + 50, y_coordinate + 10, text= q_table[row][column][0], font="Verdana 8 bold",
                          fill='white', tags='nums')
-      self.c.create_text(i + 85, y_coordinate + 50, text= pickup_q_table[row][column][1], font="Verdana 8 bold",
+      self.c.create_text(i + 85, y_coordinate + 50, text= q_table[row][column][1], font="Verdana 8 bold",
+                         fill='white', tags='nums', angle=90)
+      self.c.create_text(i + 50, y_coordinate + 90, text= q_table[row][column][2], font="Verdana 8 bold",
                          fill='white', tags='nums')
-      self.c.create_text(i + 50, y_coordinate + 90, text= pickup_q_table[row][column][2], font="Verdana 8 bold",
-                         fill='white', tags='nums')
-      self.c.create_text(i + 15, y_coordinate + 50, text= pickup_q_table[row][column][3], font="Verdana 8 bold",
-                         fill='white', tags='nums')
+      self.c.create_text(i + 15, y_coordinate + 50, text= q_table[row][column][3], font="Verdana 8 bold",
+                         fill='white', tags='nums', angle=90)
       column += 1
 
   def create_agent(self):
@@ -136,12 +141,12 @@ class GridWorld(Frame):
     pickup_states = [[0, 0], [2, 2], [4, 4]]
     dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
-    # initialize_Q_table()
     initalizeCells(pickup_states, dropoff_states)
 
     for index in range(4000):
       agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
+      time.sleep(0.2)
       self.delete_nums()
       self.update_gird_numbs()
       self.master.update()
@@ -151,11 +156,13 @@ class GridWorld(Frame):
     for index in range(4000):
       agent.policy = "PGreedy"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
+      time.sleep(0.2)
       self.delete_nums()
       self.update_gird_numbs()
       self.master.update()
 
     print("FINISH")
+
     initialize_Q_table()
 
 
