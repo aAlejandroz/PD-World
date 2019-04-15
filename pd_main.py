@@ -329,7 +329,7 @@ if __name__ == '__main__':
   while True:
 
     try:
-      experiment_num = int(input("Choose Experiemnt 1 - 5 by entering the corresponding number -  \n" ))
+      experiment_num = int(input("Choose Experiment 1 - 5 by entering the corresponding number -  \n" ))
 
     except ValueError:
       print("Did not enter a number. Try again")
