@@ -146,7 +146,8 @@ class GridWorld(Frame):
     for index in range(4000):
       agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      time.sleep(0.2)
+      time.sleep(0.35)
+      self.move_agent(agent.action)
       self.delete_nums()
       self.update_gird_numbs()
       self.master.update()
@@ -156,7 +157,8 @@ class GridWorld(Frame):
     for index in range(4000):
       agent.policy = "PGreedy"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      time.sleep(0.2)
+      time.sleep(0.35)
+      self.move_agent(agent.action)
       self.delete_nums()
       self.update_gird_numbs()
       self.master.update()
@@ -165,12 +167,19 @@ class GridWorld(Frame):
 
     initialize_Q_table()
 
+  def move_agent(self, action):
 
-  def move_agent(self):
-    for i in range(4):
-      time.sleep(0.4)
-      self.c.move(self.agent_data['item'], -100, 100)
-      self.master.update()
+    if action.name == "NORTH":
+      self.c.move(self.agent_data['item'], 0, -100)
+    elif action.name == "EAST":
+      self.c.move(self.agent_data['item'], 100, 0)
+    elif action.name == "SOUTH":
+      self.c.move(self.agent_data['item'], 0, 100)
+    elif action.name == "WEST":
+      self.c.move(self.agent_data['item'], -100, 0)
+
+    self.master.update()
+
 
   def delete_nums(self):
     self.c.delete("nums")

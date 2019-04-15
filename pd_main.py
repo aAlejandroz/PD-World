@@ -228,6 +228,7 @@ def Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_state
 
   possible_actions = getAllPossibleNextAction(position)                                          # possible actions in state
   action = getPolicyAction(agent, agent.state, possible_actions, pickup_states, dropoff_states)  # a = action chosen in state
+  agent.action = action
   next_state = getNextState(agent.state, action)                                                 # s' = next state after action is applied
   reward = calculateRewardFromAction(action)                                                     # calculate agent's rewards & bank account
   agent.updateRewards(reward)

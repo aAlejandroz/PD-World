@@ -3,6 +3,7 @@ class Agent:
 
 
   def __init__(self):
+    self.action = None
     self.past_state = None
     self.state = [0, 4, 0]
     self.position = [0, 4]
