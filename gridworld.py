@@ -3,7 +3,6 @@ import numpy as np
 import time
 from pd_main import *
 
-
 class GridWorld(Frame):
 
 
@@ -29,6 +28,7 @@ class GridWorld(Frame):
 
 
     self.c.pack(fill=BOTH, expand=True)
+
 
   def create_grid(self):
     w = 500
@@ -336,5 +336,5 @@ class Main(GridWorld):
     app = GridWorld(master)
     app.mainloop()
 
-
 Main()
+
