@@ -167,6 +167,38 @@ class GridWorld(Frame):
 
     initialize_Q_table()
 
+  def experiment_2(self):
+    learning_rate = 0.3
+    discount_rate = 0.5
+
+    pickup_states = [[0, 0], [2, 2], [4, 4]]
+    dropoff_states = [[1, 4], [4, 0], [4, 2]]
+
+    initalizeCells(pickup_states, dropoff_states)
+
+    for index in range(200):
+      agent.policy = "PRandom"
+      Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
+      time.sleep(0.35)
+      self.move_agent(agent.action)
+      self.delete_nums()
+      self.update_gird_numbs()
+      self.master.update()
+
+    for index in range(7800):
+      agent.policy = "PExploit"
+      Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
+      time.sleep(0.35)
+      self.move_agent(agent.action)
+      self.delete_nums()
+      self.update_gird_numbs()
+      self.master.update()
+
+    print("FINISH")
+
+    initialize_Q_table()
+
+
   def move_agent(self, action):
 
     if action.name == "NORTH":
