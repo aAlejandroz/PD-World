@@ -14,6 +14,7 @@ class actions(enum.Enum):
   WEST   = 3
   PICKUP = 4
   DROP   = 5
+  RESET  = 6
 
 environment = [[[None, -1, -1, None], [None, -1, -1, -1], [None, -1, -1, -1], [None, -1, -1, -1], [None, None, -1, -1]],
                  [[-1, -1, -1, None], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, -1, -1, -1], [-1, None, -1, -1]],
@@ -256,6 +257,7 @@ def Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_state
 
   if is_terminal:
     agent.initialize()
+    agent.action = actions.RESET
     initalizeCells(pickup_states, dropoff_states)
     print("\n-----------INITIALIZED----------")
 
@@ -303,7 +305,7 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states
     agent.initialize()
     initalizeCells(pickup_states, dropoff_states)
     print("\n-----------INITIALIZED----------")
-    return None
+    return actions.RESET
 
   return next_action
 
@@ -483,32 +485,32 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states
 #     print()
 
 #--------- MAIN ----------#
-if __name__ == '__main__':
-
-  while True:
-
-    try:
-      experiment_num = int(input("Choose Experiment 1 - 5 by entering the corresponding number -  \n" ))
-
-    except ValueError:
-      print("Did not enter a number. Try again")
-    else:
-      if experiment_num == 1:
-        print("|----------------Running Experiment 1----------------| \n")
-        experiment_1()
-      elif experiment_num == 2:
-        print("|----------------Running Experiment 2----------------|\n")
-        experiment_2()
-      elif experiment_num == 3:
-        print("|----------------Running Experiment 3----------------|\n")
-        experiment_3()
-      elif experiment_num == 4:
-        print("|----------------Running Experiment 4----------------|\n")
-        experiments_4()
-      elif experiment_num == 5:
-        print("|----------------Running Experiment 5----------------|\n")
-        experiment_5()
-
-      print()
-
+# if __name__ == '__main__':
+#
+#   while True:
+#
+#     try:
+#       experiment_num = int(input("Choose Experiment 1 - 5 by entering the corresponding number -  \n" ))
+#
+#     except ValueError:
+#       print("Did not enter a number. Try again")
+#     else:
+#       if experiment_num == 1:
+#         print("|----------------Running Experiment 1----------------| \n")
+#         experiment_1()
+#       elif experiment_num == 2:
+#         print("|----------------Running Experiment 2----------------|\n")
+#         experiment_2()
+#       elif experiment_num == 3:
+#         print("|----------------Running Experiment 3----------------|\n")
+#         experiment_3()
+#       elif experiment_num == 4:
+#         print("|----------------Running Experiment 4----------------|\n")
+#         experiments_4()
+#       elif experiment_num == 5:
+#         print("|----------------Running Experiment 5----------------|\n")
+#         experiment_5()
+#
+#       print()
+#
 

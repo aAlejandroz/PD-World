@@ -13,6 +13,7 @@ class Agent:
     self.num_operators = 0
 
   def initialize(self):
+    self.action = None
     self.past_state = None
     self.state = [0, 4, 0]  # [row, column, block]
     self.position = [0, 4]
