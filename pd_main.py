@@ -33,20 +33,30 @@ dropoff_q_table = [ [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]]
 
+hello = 1
+
 agent = Agent()
+
 
 # ------------------------------ HELPER FUNCTIONS ------------------------------- #
 
-# calculates Q(a,s)
-def calculateQvalue(action, state):
-  row = state[0]
-  col = state[1]
+# function to initialize Q table #
+def initialize_Q_table():
+  global pickup_q_table, dropoff_q_table
 
-  hasBlock = True if state[2] == 1 else False
-  q_table = dropoff_q_table if hasBlock else pickup_q_table
+  pickup_q_table = [
+    [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+    [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+    [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+    [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+    [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]]
 
-  return q_table[row][col][action.value]
-
+  dropoff_q_table = [
+    [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+    [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+    [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+    [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]],
+    [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]]
 
 # calculates reward from action #
 def calculateRewardFromAction(action):
@@ -190,11 +200,10 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states
   next_action = getPolicyAction(agent, next_state, next_possible_actions, pickup_states, dropoff_states)   # a' = next action in s'
 
   q_table = dropoff_q_table if agent.hasBlock() else pickup_q_table
-  q_value = calculateQvalue(action, [row][col])
-  #q_value = q_table[row][col][action.value]
+  old_value = q_table[row][col][action.value]
 
-  q_table[row][col][action.value] = q_value + learning_rate * (reward + discount_rate *
-                                                                q_table[next_state[0]][next_state[1]][next_action.value] - q_value)
+  q_table[row][col][action.value] = old_value + learning_rate * (reward + discount_rate *
+                                                                q_table[next_state[0]][next_state[1]][next_action.value] - old_value)
 
   agent.updateState(next_state)
   agent.updatePosition()
@@ -211,6 +220,7 @@ def experiment_1():
   pickup_states = [[0, 0], [2, 2], [4, 4]]
   dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
+  initialize_Q_table()
   initalizeCells(pickup_states, dropoff_states)
 
   for index in range(4000):
@@ -225,7 +235,7 @@ def experiment_1():
 
   print('\n')
 
-  print("Pickup Q TABLE")
+  print("\nPickup Q TABLE")
   for row in range(5):
     for column in range(5):
       print(pickup_q_table[row][column], end=" ")
@@ -245,6 +255,7 @@ def experiment_2():
   pickup_states = [[0, 0], [2, 2], [4, 4]]
   dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
+  initialize_Q_table()
   initalizeCells(pickup_states, dropoff_states)
 
   for index in range(200):
@@ -257,6 +268,18 @@ def experiment_2():
     agent.policy = "PExploit"
     Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
 
+  print("\nPickup Q TABLE")
+  for row in range(5):
+    for column in range(5):
+      print(pickup_q_table[row][column], end=" ")
+    print()
+
+  print("\nDropoff Q TABLE")
+  for row in range(5):
+    for column in range(5):
+      print(dropoff_q_table[row][column], end=" ")
+    print()
+
 
 def experiment_3():
   learning_rate = 0.3
@@ -265,6 +288,7 @@ def experiment_3():
   pickup_states = [[0, 0], [2, 2], [4, 4]]
   dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
+  initialize_Q_table()
   initalizeCells(pickup_states, dropoff_states)
 
   agent.policy = "PRandom"
@@ -280,6 +304,19 @@ def experiment_3():
 
   #TODO final Q_table
 
+  print("\nPickup Q TABLE")
+  for row in range(5):
+    for column in range(5):
+      print(pickup_q_table[row][column], end=" ")
+    print()
+
+  print("\nDropoff Q TABLE")
+  for row in range(5):
+    for column in range(5):
+      print(dropoff_q_table[row][column], end=" ")
+    print()
+
+
 def experiments_4():
   learning_rate = 0.3
   discount_rate = 1
@@ -287,6 +324,7 @@ def experiments_4():
   pickup_states = [[0, 0], [2, 2], [4, 4]]
   dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
+  initialize_Q_table()
   initalizeCells(pickup_states, dropoff_states)
 
   agent.policy = "PRandom"
@@ -302,6 +340,18 @@ def experiments_4():
 
   # TODO final Q_table
 
+  print("\nPickup Q TABLE")
+  for row in range(5):
+    for column in range(5):
+      print(pickup_q_table[row][column], end=" ")
+    print()
+
+  print("\nDropoff Q TABLE")
+  for row in range(5):
+    for column in range(5):
+      print(dropoff_q_table[row][column], end=" ")
+    print()
+
 
 def experiment_5():
   learning_rate = 0.3
@@ -310,6 +360,7 @@ def experiment_5():
   pickup_states =  [[1, 4], [4, 0], [4, 2]]
   dropoff_states = [[0, 0], [2, 2], [4, 4]]
 
+  initialize_Q_table()
   initalizeCells(pickup_states, dropoff_states)
 
   for index in range(200):
@@ -322,6 +373,17 @@ def experiment_5():
     agent.policy = "PExploit"
     Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
 
+  print("\nPickup Q TABLE")
+  for row in range(5):
+    for column in range(5):
+      print(pickup_q_table[row][column], end=" ")
+    print()
+
+  print("\nDropoff Q TABLE")
+  for row in range(5):
+    for column in range(5):
+      print(dropoff_q_table[row][column], end=" ")
+    print()
 
 #--------- MAIN ----------#
 if __name__ == '__main__':
