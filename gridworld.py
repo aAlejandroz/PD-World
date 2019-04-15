@@ -32,19 +32,19 @@ class GridWorld(Frame):
     self.c.create_rectangle(0, 400, 100, 500, fill="dark orange")
     y_coordinate = 0
     for i in range(0, 500, 100):
-      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST, tags='nums')
+      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST)
     y_coordinate = 100
     for i in range(0, 500, 100):
-      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST, tags='nums')
+      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST)
     y_coordinate = 200
     for i in range(0, 500, 100):
-      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST, tags='nums')
+      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST)
     y_coordinate = 300
     for i in range(0, 500, 100):
-      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST, tags='nums')
+      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST)
     y_coordinate = 400
     for i in range(0, 500, 100):
-      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST, tags ='nums')
+      self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST)
 
     for i in range(0, 600, 100):
       self.c.create_line([(i, 0), (i, h)], tag='grid_line', fill='white')
@@ -52,114 +52,6 @@ class GridWorld(Frame):
     for i in range(0, 600, 100):
       self.c.create_line([(0, i), (w, i)], tag='grid_line', fill='white')
 
-
-  def update_arrows(self):
-    global pickup_q_table
-    global dropoff_q_table
-    global agent
-
-    q_table = dropoff_q_table if agent.hasBlock() else pickup_q_table
-
-    row = 0
-    column = 0
-    y_coordinate = 0
-    for i in range(0,500,100):
-      direction = self.get_max_q_value(row,column,q_table)
-      if(direction == 0):
-        self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif(direction == 1):
-        self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif(direction == 2):
-        self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif(direction == 3):
-        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      column += 1
-    row = 1
-    column = 0
-    y_coordinate = 100
-    for i in range(0, 500, 100):
-      direction = self.get_max_q_value(row, column, q_table)
-      if (direction == 0):
-        self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
-                             tags='nums')
-      elif (direction == 1):
-        self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                             tags='nums')
-      elif (direction == 2):
-        self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
-                             tags='nums')
-      elif (direction == 3):
-        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                             tags='nums')
-      column += 1
-    row = 2
-    column = 0
-    y_coordinate = 200
-    for i in range(0, 500, 100):
-      direction = self.get_max_q_value(row, column, q_table)
-      if (direction == 0):
-        self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
-                             tags='nums')
-      elif (direction == 1):
-        self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                             tags='nums')
-      elif (direction == 2):
-        self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
-                             tags='nums')
-      elif (direction == 3):
-        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                             tags='nums')
-      column += 1
-    row = 3
-    column = 0
-    y_coordinate = 300
-    for i in range(0, 500, 100):
-      direction = self.get_max_q_value(row, column, q_table)
-      if (direction == 0):
-        self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif (direction == 1):
-        self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif (direction == 2):
-        self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif (direction == 3):
-        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      column += 1
-    row = 4
-    column = 0
-    y_coordinate = 400
-    for i in range(0, 500, 100):
-      direction = self.get_max_q_value(row, column, q_table)
-      if (direction == 0):
-        self.c.create_line(i + 50, y_coordinate + 40, i + 50, y_coordinate + 60, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif (direction == 1):
-        self.c.create_line(i + 60, y_coordinate + 50, i + 40, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif (direction == 2):
-        self.c.create_line(i + 50, y_coordinate + 60, i + 50, y_coordinate + 40, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      elif (direction == 3):
-        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST,
-                           tags='nums')
-      column += 1
-
-
-  def get_max_q_value(self, x, y, table):
-    max = table[x][y][0]
-    index = 0
-    for i in range(4):
-      if(table[x][y][i] > max):
-        max = table[x][y][i]
-        index = i
-    return index
 
   def update_gird_numbs(self):
     global pickup_q_table
@@ -171,6 +63,7 @@ class GridWorld(Frame):
     row = 0
     column = 0
     y_coordinate = 0
+
     for i in range(0, 500, 100):
       self.c.create_text(i + 50, y_coordinate + 10, text=q_table[row][column][0], font="Verdana 8 bold",
                          fill='white', tags='nums')
@@ -264,11 +157,7 @@ class GridWorld(Frame):
       agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       time.sleep(0.5)
-      self.move_agent(agent.action)
-      self.delete_nums()
-      self.update_gird_numbs()
-      self.update_arrows()
-      self.master.update()
+      self.moveAndUpdateAgent()
 
     # TODO Where we display the Q_table
 
@@ -276,11 +165,7 @@ class GridWorld(Frame):
       agent.policy = "PGreedy"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       time.sleep(0.5)
-      self.move_agent(agent.action)
-      self.delete_nums()
-      self.update_gird_numbs()
-      self.update_arrows()
-      self.master.update()
+      self.moveAndUpdateAgent()
 
     print("FINISH")
 
@@ -297,19 +182,13 @@ class GridWorld(Frame):
       agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       # time.sleep(0.35)
-      self.move_agent(agent.action)
-      self.delete_nums()
-      self.update_gird_numbs()
-      self.master.update()
+      self.moveAndUpdateAgent()
 
     for index in range(7800):
       agent.policy = "PExploit"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       # time.sleep(0.35)
-      self.move_agent(agent.action)
-      self.delete_nums()
-      self.update_gird_numbs()
-      self.master.update()
+      self.moveAndUpdateAgent()
 
     print("FINISH")
 
@@ -325,8 +204,8 @@ class GridWorld(Frame):
       self.c.move(self.agent, 0, 100)
     elif action.name == "WEST":
       self.c.move(self.agent, -100, 0)
-    # elif action.name == "RESET":
-    #   self.resetAgent()
+    elif action.name == "RESET":
+      self.resetAgent()
 
     self.master.update()
 
