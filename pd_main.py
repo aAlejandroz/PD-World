@@ -1,7 +1,7 @@
 from agent import Agent
-from policies import *
 from cell_methods import *
-from RL_updates import *
+from grid_cells import *
+from policies import *
 import copy
 import enum
 import numpy as np
@@ -33,12 +33,92 @@ dropoff_q_table = [ [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],
             [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]]]
 
-hello = 1
-
 agent = Agent()
 
+# random policy #
+def PRandom(possible_actions):
+  return random.choice(possible_actions)
 
+# exploit policy #
+def PExploit(possible_actions, agent, row, col):
+  duplicate = []
+
+  q_table = dropoff_q_table if agent.hasBlock() else pickup_q_table
+
+  # choose action with best q-value 80% of the time
+  if random.random() <= 0.8:
+    max_action = possible_actions[0]
+    for num in possible_actions:
+      q_value = q_table[row][col][num]
+      max_q_value = q_table[row][col][max_action]
+
+      if q_value > max_q_value:
+        max_action = num
+        duplicate.clear()
+        duplicate.append(num)
+      if q_value == max_q_value:
+        duplicate.append(num)
+
+    exploit_choice = random.choice(duplicate) if len(duplicate) > 1 else max_action
+  else:
+    exploit_choice = random.choice(possible_actions)
+
+  return exploit_choice
+
+# greedy policy #
+def PGreedy(possible_actions, agent, row, col):
+  duplicate = []
+
+  q_table = dropoff_q_table if agent.hasBlock() else pickup_q_table
+
+  # choose action with best q-value 100% of the time
+  max_action = possible_actions[0]
+  for num in possible_actions:
+    q_value = q_table[row][col][num]
+    max_q_value = q_table[row][col][max_action]
+
+    if q_value > max_q_value:
+      max_action = num
+      duplicate.clear()
+      duplicate.append(num)
+    if q_value == max_q_value:
+      duplicate.append(num)
+
+  greedy_choice = random.choice(duplicate) if len(duplicate) > 1 else max_action
+
+  return greedy_choice
 # ------------------------------ HELPER FUNCTIONS ------------------------------- #
+
+pickup_cells = []   # list of pickup cells
+dropoff_cells = []  # list of drop off cells
+
+# decrement blocks on cell #
+def decrementNumBlocksInCell(pos):
+  cell = getCellFromPosition(pos, pickup_cells)
+  cell.num_of_blocks -= 1
+
+
+# increment blocks on cell #
+def incrementNumBlocksInCell(pos):
+  cell = getCellFromPosition(pos, dropoff_cells)
+  cell.num_of_blocks += 1
+
+# Initialize environment to original #
+def initalizeCells(pickup_states, dropoff_states):
+  pickup_cells.clear()
+  dropoff_cells.clear()
+
+  for pos in pickup_states:
+    pickup_cells.append(Cells(pos, 5))
+
+  for pos in dropoff_states:
+    dropoff_cells.append(Cells(pos, 0))
+
+# returns the cell object in the given position #
+def getCellFromPosition(pos, cell_list):
+  for cell in cell_list:
+    if cell.position == pos:
+      return cell
 
 # function to initialize Q table #
 def initialize_Q_table():
