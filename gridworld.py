@@ -61,6 +61,8 @@ class GridWorld(Frame):
     y_coordinate = 0
 
     for i in range(0, 500, 100):
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       self.c.create_text(i + 50, y_coordinate + 10, text=q_table[row][column][0], font="Verdana 8 bold",
                          fill='white', tags='nums')
       self.c.create_text(i + 85, y_coordinate + 50, text=q_table[row][column][1], font="Verdana 8 bold",
@@ -74,6 +76,8 @@ class GridWorld(Frame):
     row = 1
     column = 0
     for i in range(0, 500, 100):
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       self.c.create_text(i + 50, y_coordinate + 10, text=q_table[row][column][0], font="Verdana 8 bold",
                          fill='white', tags='nums')
       self.c.create_text(i + 85, y_coordinate + 50, text=q_table[row][column][1], font="Verdana 8 bold",
@@ -87,6 +91,8 @@ class GridWorld(Frame):
     row = 2
     column = 0
     for i in range(0, 500, 100):
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       self.c.create_text(i + 50, y_coordinate + 10, text=q_table[row][column][0], font="Verdana 8 bold",
                          fill='white', tags='nums')
       self.c.create_text(i + 85, y_coordinate + 50, text=q_table[row][column][1], font="Verdana 8 bold",
@@ -100,6 +106,8 @@ class GridWorld(Frame):
     row = 3
     column = 0
     for i in range(0, 500, 100):
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       self.c.create_text(i + 50, y_coordinate + 10, text=q_table[row][column][0], font="Verdana 8 bold",
                          fill='white', tags='nums')
       self.c.create_text(i + 85, y_coordinate + 50, text=q_table[row][column][1], font="Verdana 8 bold",
@@ -113,6 +121,8 @@ class GridWorld(Frame):
     row = 4
     column = 0
     for i in range(0, 500, 100):
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       self.c.create_text(i + 50, y_coordinate + 10, text= q_table[row][column][0], font="Verdana 8 bold",
                          fill='white', tags='nums')
       self.c.create_text(i + 85, y_coordinate + 50, text= q_table[row][column][1], font="Verdana 8 bold",
