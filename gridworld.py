@@ -157,10 +157,7 @@ class GridWorld(Frame):
       agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       time.sleep(0.5)
-      self.move_agent(agent.action)
-      self.delete_nums()
-      self.update_gird_numbs()
-      self.master.update()
+      self.moveAndUpdateAgent()
 
     # TODO Where we display the Q_table
 
@@ -168,10 +165,7 @@ class GridWorld(Frame):
       agent.policy = "PGreedy"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       time.sleep(0.5)
-      self.move_agent(agent.action)
-      self.delete_nums()
-      self.update_gird_numbs()
-      self.master.update()
+      self.moveAndUpdateAgent()
 
     print("FINISH")
 
@@ -188,19 +182,13 @@ class GridWorld(Frame):
       agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       # time.sleep(0.35)
-      self.move_agent(agent.action)
-      self.delete_nums()
-      self.update_gird_numbs()
-      self.master.update()
+      self.moveAndUpdateAgent()
 
     for index in range(7800):
       agent.policy = "PExploit"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       # time.sleep(0.35)
-      self.move_agent(agent.action)
-      self.delete_nums()
-      self.update_gird_numbs()
-      self.master.update()
+      self.moveAndUpdateAgent()
 
     print("FINISH")
 
@@ -216,8 +204,8 @@ class GridWorld(Frame):
       self.c.move(self.agent, 0, 100)
     elif action.name == "WEST":
       self.c.move(self.agent, -100, 0)
-    # elif action.name == "RESET":
-    #   self.resetAgent()
+    elif action.name == "RESET":
+      self.resetAgent()
 
     self.master.update()
 
