@@ -33,6 +33,8 @@ class GridWorld(Frame):
                             y_coordinate)
       self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
       self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
     y_coordinate = 100
     for i in range(0, 500, 100):
       self.c.create_polygon(i, y_coordinate, i + 100, y_coordinate, i + 50, y_coordinate + 50, i, y_coordinate)
@@ -40,6 +42,8 @@ class GridWorld(Frame):
                             y_coordinate)
       self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
       self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
     y_coordinate = 200
     for i in range(0, 500, 100):
       self.c.create_polygon(i, y_coordinate, i + 100, y_coordinate, i + 50, y_coordinate + 50, i, y_coordinate)
@@ -47,6 +51,8 @@ class GridWorld(Frame):
                             y_coordinate)
       self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
       self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
     y_coordinate = 300
     for i in range(0, 500, 100):
       self.c.create_polygon(i, y_coordinate, i + 100, y_coordinate, i + 50, y_coordinate + 50, i, y_coordinate)
@@ -54,6 +60,8 @@ class GridWorld(Frame):
                             y_coordinate)
       self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
       self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
     y_coordinate = 400
     for i in range(0, 500, 100):
       self.c.create_polygon(i, y_coordinate, i + 100, y_coordinate, i + 50, y_coordinate + 50, i, y_coordinate)
@@ -61,6 +69,8 @@ class GridWorld(Frame):
                             y_coordinate)
       self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
       self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
+      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
+      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
 
     for i in range(0, 600, 100):
       self.c.create_line([(i, 0), (i, h)], tag='grid_line', fill='white')
@@ -74,7 +84,6 @@ class GridWorld(Frame):
     self.c.create_rectangle(400, 100, 500, 200, fill="dark orange")
     self.c.create_rectangle(300, 400, 200, 500, fill="dark orange")
     self.c.create_rectangle(0, 400, 100, 500, fill="dark orange")
-
   def init_zeros(self):
     s = 0
     x = 25
@@ -105,9 +114,6 @@ class GridWorld(Frame):
                          fill='white', tags='nums')
       self.c.create_text(i + 15, y_coordinate + 50, text=q_table[row][column][3], font="Verdana 8 bold",
                          fill='white', tags='nums', angle=90)
-
-      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
-      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       column += 1
     y_coordinate = 100
     row = 1
@@ -121,8 +127,6 @@ class GridWorld(Frame):
                          fill='white', tags='nums')
       self.c.create_text(i + 15, y_coordinate + 50, text=q_table[row][column][3], font="Verdana 8 bold",
                          fill='white', tags='nums', angle=90)
-      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
-      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       column += 1
     y_coordinate = 200
     row = 2
@@ -136,8 +140,6 @@ class GridWorld(Frame):
                          fill='white', tags='nums')
       self.c.create_text(i + 15, y_coordinate + 50, text=q_table[row][column][3], font="Verdana 8 bold",
                          fill='white', tags='nums', angle=90)
-      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
-      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       column += 1
     y_coordinate = 300
     row = 3
@@ -151,8 +153,6 @@ class GridWorld(Frame):
                          fill='white', tags='nums')
       self.c.create_text(i + 15, y_coordinate + 50, text=q_table[row][column][3], font="Verdana 8 bold",
                          fill='white', tags='nums', angle=90)
-      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
-      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       column += 1
     y_coordinate = 400
     row = 4
@@ -166,8 +166,6 @@ class GridWorld(Frame):
                          fill='white', tags='nums')
       self.c.create_text(i + 15, y_coordinate + 50, text= q_table[row][column][3], font="Verdana 8 bold",
                          fill='white', tags='nums', angle=90)
-      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
-      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
       column += 1
 
   def create_agent(self):
@@ -193,7 +191,7 @@ class GridWorld(Frame):
     for index in range(4000):
       agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      time.sleep(0.35)
+      time.sleep(0.2)
       self.move_agent(agent.action)
       self.delete_nums()
       self.update_gird_numbs()
@@ -204,7 +202,7 @@ class GridWorld(Frame):
     for index in range(4000):
       agent.policy = "PGreedy"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      time.sleep(0.35)
+      time.sleep(0.2)
       self.move_agent(agent.action)
       self.delete_nums()
       self.update_gird_numbs()
