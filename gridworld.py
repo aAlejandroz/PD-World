@@ -3,7 +3,6 @@ import numpy as np
 import time
 from pd_main import *
 
-
 class GridWorld(Frame):
 
   def __init__(self, master=None):
@@ -21,6 +20,7 @@ class GridWorld(Frame):
     self.c.bind("<Button-1>", self.callback)
     self.master.bind("<space>", lambda e: self.experiment_1())
     self.c.pack(fill=BOTH, expand=True)
+
 
   def create_grid(self):
     w = 500
@@ -242,5 +242,5 @@ class Main(GridWorld):
     app = GridWorld(master)
     app.mainloop()
 
-
 Main()
+
