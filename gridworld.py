@@ -26,57 +26,6 @@ class GridWorld(Frame):
     w = 500
     h = 500
     self.c.delete('grid_line')
-    y_coordinate = 0
-    for i in range(0, 500, 100):
-      self.c.create_polygon(i, y_coordinate, i + 100, y_coordinate, i + 50, y_coordinate + 50, i, y_coordinate)
-      self.c.create_polygon(i + 100, y_coordinate, i + 100, y_coordinate + 100, i + 50, y_coordinate + 50, i + 100,
-                            y_coordinate)
-      self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
-      self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
-      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
-      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
-    y_coordinate = 100
-    for i in range(0, 500, 100):
-      self.c.create_polygon(i, y_coordinate, i + 100, y_coordinate, i + 50, y_coordinate + 50, i, y_coordinate)
-      self.c.create_polygon(i + 100, y_coordinate, i + 100, y_coordinate + 100, i + 50, y_coordinate + 50, i + 100,
-                            y_coordinate)
-      self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
-      self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
-      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
-      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
-    y_coordinate = 200
-    for i in range(0, 500, 100):
-      self.c.create_polygon(i, y_coordinate, i + 100, y_coordinate, i + 50, y_coordinate + 50, i, y_coordinate)
-      self.c.create_polygon(i + 100, y_coordinate, i + 100, y_coordinate + 100, i + 50, y_coordinate + 50, i + 100,
-                            y_coordinate)
-      self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
-      self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
-      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
-      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
-    y_coordinate = 300
-    for i in range(0, 500, 100):
-      self.c.create_polygon(i, y_coordinate, i + 100, y_coordinate, i + 50, y_coordinate + 50, i, y_coordinate)
-      self.c.create_polygon(i + 100, y_coordinate, i + 100, y_coordinate + 100, i + 50, y_coordinate + 50, i + 100,
-                            y_coordinate)
-      self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
-      self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
-      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
-      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
-    y_coordinate = 400
-    for i in range(0, 500, 100):
-      self.c.create_polygon(i, y_coordinate, i + 100, y_coordinate, i + 50, y_coordinate + 50, i, y_coordinate)
-      self.c.create_polygon(i + 100, y_coordinate, i + 100, y_coordinate + 100, i + 50, y_coordinate + 50, i + 100,
-                            y_coordinate)
-      self.c.create_polygon(i,y_coordinate+100,i+50,y_coordinate+50,i+100,y_coordinate+100,i,y_coordinate+100)
-      self.c.create_polygon(i,y_coordinate,i+50,y_coordinate+50,i,y_coordinate+100,i,y_coordinate)
-      self.c.create_line(i, y_coordinate, i + 100, y_coordinate + 100, fill='white', width=1)
-      self.c.create_line(i + 100, y_coordinate, i, y_coordinate + 100, fill='white', width=1)
-
-    for i in range(0, 600, 100):
-      self.c.create_line([(i, 0), (i, h)], tag='grid_line', fill='white')
-
-    for i in range(0, 600, 100):
-      self.c.create_line([(0, i), (w, i)], tag='grid_line', fill='white')
     self.c.create_rectangle(0, 0, 100, 100, fill="sea green")
     self.c.create_rectangle(200, 200, 300, 300, fill="sea green")
     self.c.create_rectangle(400, 400, 500, 500, fill="sea green")
@@ -84,6 +33,28 @@ class GridWorld(Frame):
     self.c.create_rectangle(400, 100, 500, 200, fill="dark orange")
     self.c.create_rectangle(300, 400, 200, 500, fill="dark orange")
     self.c.create_rectangle(0, 400, 100, 500, fill="dark orange")
+    y_coordinate = 0
+    for i in range(0, 500, 100):
+        self.c.create_line(i+40, y_coordinate+50,i+60, y_coordinate+50, fill='white', width=1, arrow=FIRST)
+    y_coordinate = 100
+    for i in range(0, 500, 100):
+        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST)
+    y_coordinate = 200
+    for i in range(0, 500, 100):
+        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST)
+    y_coordinate = 300
+    for i in range(0, 500, 100):
+        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST)
+    y_coordinate = 400
+    for i in range(0, 500, 100):
+        self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='white', width=1, arrow=FIRST)
+
+    for i in range(0, 600, 100):
+      self.c.create_line([(i, 0), (i, h)], tag='grid_line', fill='white')
+
+    for i in range(0, 600, 100):
+      self.c.create_line([(0, i), (w, i)], tag='grid_line', fill='white')
+
   def init_zeros(self):
     s = 0
     x = 25
