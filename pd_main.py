@@ -46,6 +46,9 @@ agent = Agent()
 pickup_cells = []   # list of pickup cells
 dropoff_cells = []  # list of drop off cells
 
+
+
+
 # random policy #
 # returns a random number in the possible actions list
 def PRandom(possible_actions):
@@ -306,6 +309,10 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states
       is_terminal = True
 
   if is_terminal:
+
+    bank_account_list.append(agent.bank_account)
+    num_operator_list.append(agent.bank_account)
+
     agent.initialize()
     initalizeCells(pickup_states, dropoff_states)
     print("\n-----------INITIALIZED----------")
