@@ -2,6 +2,7 @@ from tkinter import *
 import numpy as np
 import time
 from pd_main import *
+from tkinter import PhotoImage
 
 
 class GridWorld(Frame):
@@ -472,7 +473,7 @@ class GridWorld(Frame):
 
   def prompt_experiments(self):
     experiment_num = int(input("Choose Experiment 1 - 5 by entering the corresponding number -  \n" ))
-    self.seconds = int(input("How fast do you want to the experiment to run? (From 0 to 1.0)"))
+    self.seconds = float(input("How fast do you want to the experiment to run? (From 0 to 1.0)"))
     if experiment_num == 1:
       print("|----------------Running Experiment 1----------------| \n")
       self.experiment_1()
