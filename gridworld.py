@@ -10,7 +10,7 @@ class GridWorld(Frame):
     self.master = master
     Frame.__init__(self, self.master)
     self.c = Canvas(self.master, height=500, width=500, bg='black')
-    self.agent_data = {"x": 0, "y": 0, "item": None}
+    self.seconds = 0
     self.create_grid()
     self.num = 1
     self.agent = ()
@@ -311,7 +311,6 @@ class GridWorld(Frame):
 
   def create_agent(self):
     self.agent = self.c.create_oval(434, 34, 464, 64, fill='cyan', tags='Agent')
-    self.agent_data["item"] = self.c.find_closest(448, 47)[0]
 
 
   def update_active_states(self):
@@ -345,7 +344,7 @@ class GridWorld(Frame):
 
 
   def moveAndUpdateAgent(self):
-    # time.sleep(0.2)
+    time.sleep(self.seconds)
     self.delete_nums()
     self.update_arrows()
     self.update_gird_numbs()
@@ -474,6 +473,7 @@ class GridWorld(Frame):
 
   def prompt_experiments(self):
     experiment_num = int(input("Choose Experiment 1 - 5 by entering the corresponding number -  \n" ))
+    self.seconds = int(input("How fast do you want to the experiment to run? (From 0 to 1)"))
     if experiment_num == 1:
       print("|----------------Running Experiment 1----------------| \n")
       self.experiment_1()
