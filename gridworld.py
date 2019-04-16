@@ -328,15 +328,18 @@ class GridWorld(Frame):
     pickup_states = [[0, 0], [2, 2], [4, 4]]
     dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
+    initialize_Q_table()
     initalizeCells(pickup_states, dropoff_states)
 
-    for index in range(4000):
+    print("\n|---------------- RANDOM POLICY ----------------| \n")
+
+    for index in range(100):
       agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       # time.sleep(0.1)
       self.moveAndUpdateAgent()
 
-    print("\nGREEDY\n")
+    print("\n|---------------- GREEDY POLICY ----------------| \n")
 
     for index in range(4000):
       agent.policy = "PGreedy"
@@ -353,6 +356,7 @@ class GridWorld(Frame):
     pickup_states = [[0, 0], [2, 2], [4, 4]]
     dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
+    initialize_Q_table()
     initalizeCells(pickup_states, dropoff_states)
 
     for index in range(200):
@@ -380,6 +384,7 @@ class GridWorld(Frame):
     pickup_states = [[0, 0], [2, 2], [4, 4]]
     dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
+    initialize_Q_table()
     initalizeCells(pickup_states, dropoff_states)
 
     agent.policy = "PRandom"
@@ -425,15 +430,15 @@ class GridWorld(Frame):
     if experiment_num == 1:
       print("|----------------Running Experiment 1----------------| \n")
       self.experiment_1()
-      initialize_Q_table()
-      self.create_agent()
-      self.delete_nums()
+      # initialize_Q_table()
+      # self.create_agent()
+      # self.delete_nums()
     elif experiment_num == 2:
       print("|----------------Running Experiment 2----------------|\n")
       self.experiment_2()
-      initialize_Q_table()
-      self.create_agent()
-      self.delete_nums()
+      # initialize_Q_table()
+      # self.create_agent()
+      # self.delete_nums()
     elif experiment_num == 3:
       print("|----------------Running Experiment 3----------------|\n")
       self.experiment_3()
