@@ -377,7 +377,6 @@ class GridWorld(Frame):
 
   def resetAgent(self):
     self.c.delete(self.agent)
-    self.agent_data["item"] = None
     self.create_agent()
 
   def experiment_1(self):
@@ -473,7 +472,7 @@ class GridWorld(Frame):
 
   def prompt_experiments(self):
     experiment_num = int(input("Choose Experiment 1 - 5 by entering the corresponding number -  \n" ))
-    self.seconds = int(input("How fast do you want to the experiment to run? (From 0 to 1)"))
+    self.seconds = int(input("How fast do you want to the experiment to run? (From 0 to 1.0)"))
     if experiment_num == 1:
       print("|----------------Running Experiment 1----------------| \n")
       self.experiment_1()
