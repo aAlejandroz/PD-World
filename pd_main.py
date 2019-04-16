@@ -311,7 +311,7 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states
   if is_terminal:
 
     bank_account_list.append(agent.bank_account)
-    num_operator_list.append(agent.bank_account)
+    num_operator_list.append(agent.num_operators)
 
     agent.initialize()
     initalizeCells(pickup_states, dropoff_states)
