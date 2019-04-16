@@ -289,8 +289,8 @@ def Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_state
       is_terminal = True
 
   if is_terminal:
-    # Add agent's bank
-
+    bank_account_list.append(agent.bank_account)
+    num_operator_list.append(agent.num_operators)
     agent.initialize()
     agent.action = actions.RESET
     initalizeCells(pickup_states, dropoff_states)

@@ -381,6 +381,15 @@ class GridWorld(Frame):
     self.create_agent()
 
 
+  def output_(self):
+    file1 = open("MyFile.txt","w")
+    print(bank_account_list)
+    print(num_operator_list)
+    file1.write(' '.join(map(str,bank_account_list)))
+    file1.write('\n')
+    file1.write(' '.join(map(str,num_operator_list)))
+
+
   def experiment_1(self):
 
     learning_rate = 0.3
@@ -407,6 +416,7 @@ class GridWorld(Frame):
       self.moveAndUpdateAgent()
 
     print("FINISH")
+    self.output_()
 
   def experiment_2(self):
     learning_rate = 0.3
@@ -425,8 +435,6 @@ class GridWorld(Frame):
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       self.moveAndUpdateAgent()
 
-    #add to data list for num of operators
-    #add to data list for bank account
     print("\n|---------------- EXPLOIT POLICY ----------------| \n")
     agent.policy = "PExploit"
 
@@ -435,6 +443,7 @@ class GridWorld(Frame):
       self.moveAndUpdateAgent()
 
     print("FINISH")
+    self.output_()
 
 
   def experiment_3(self):
@@ -465,6 +474,65 @@ class GridWorld(Frame):
       next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
 
     print("FINISHED")
+    self.output_()
+
+  def experiments_4(self):
+    learning_rate = 0.3
+    discount_rate = 1
+
+    pickup_states = [[0, 0], [2, 2], [4, 4]]
+    dropoff_states = [[1, 4], [4, 0], [4, 2]]
+
+    initialize_Q_table()
+    initalizeCells(pickup_states, dropoff_states)
+
+    print("\n|---------------- RANDOM POLICY ----------------| \n")
+
+    agent.policy = "PRandom"
+    next_action = SARSA_update(learning_rate, discount_rate, None, agent, pickup_states, dropoff_states)
+    for index in range(200):
+      self.moveAndUpdateAgent()
+      next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
+
+    # TODO Display and interpret the Q-table
+
+    print("\n|---------------- EXPLOIT POLICY ----------------| \n")
+
+    for index in range(7800):
+      agent.policy = "PExploit"
+      self.moveAndUpdateAgent()
+      next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
+
+    print("FINISHED")
+    self.output_()
+
+
+  def experiment_5(self):
+    learning_rate = 0.3
+    discount_rate = 0.5
+
+    pickup_states =  [[1, 4], [4, 0], [4, 2]]
+    dropoff_states = [[0, 0], [2, 2], [4, 4]]
+
+    initialize_Q_table()
+    initalizeCells(pickup_states, dropoff_states)
+
+    print("\n|---------------- RANDOM POLICY ----------------| \n")
+
+    agent.policy = "PRandom"
+    for index in range(200):
+      self.moveAndUpdateAgent()
+      Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
+
+    print("\n|---------------- EXPLOIT POLICY ----------------| \n")
+
+    agent.policy = "PExploit"
+    for index in range(7800):
+      self.moveAndUpdateAgent()
+      Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
+
+    print("FINISHED")
+    self.output_()
 
 
   def delete_nums(self):
