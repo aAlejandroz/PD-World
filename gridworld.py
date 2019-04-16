@@ -336,7 +336,7 @@ class GridWorld(Frame):
       # time.sleep(0.1)
       self.moveAndUpdateAgent()
 
-    # TODO Where we display the Q_table
+    print("\nGREEDY\n")
 
     for index in range(4000):
       agent.policy = "PGreedy"
@@ -372,6 +372,37 @@ class GridWorld(Frame):
 
     initialize_Q_table()
 
+  def experiment_3(self):
+
+    learning_rate = 0.3
+    discount_rate = 0.5
+
+    pickup_states = [[0, 0], [2, 2], [4, 4]]
+    dropoff_states = [[1, 4], [4, 0], [4, 2]]
+
+    initalizeCells(pickup_states, dropoff_states)
+
+    agent.policy = "PRandom"
+    next_action = SARSA_update(learning_rate, discount_rate, None, agent, pickup_states, dropoff_states)
+    self.moveAndUpdateAgent()
+
+    for index in range(200):
+      next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
+      self.moveAndUpdateAgent()
+
+    # TODO Display and interpret the Q-table
+
+    print("POLICY EXPLOIT")
+
+    for index in range(7800):
+      agent.policy = "PExploit"
+      next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
+      self.moveAndUpdateAgent()
+
+    print("FINISHED")
+
+
+
   def move_agent(self, action):
     if action.name == "NORTH":
       self.c.move(self.agent, 0, -100)
@@ -403,9 +434,10 @@ class GridWorld(Frame):
       initialize_Q_table()
       self.create_agent()
       self.delete_nums()
-    # elif experiment_num == 3:
-    #   print("|----------------Running Experiment 3----------------|\n")
-    #   experiment_3()
+    elif experiment_num == 3:
+      print("|----------------Running Experiment 3----------------|\n")
+      self.experiment_3()
+      initialize_Q_table()
     # elif experiment_num == 4:
     #   print("|----------------Running Experiment 4----------------|\n")
     #   experiments_4()
