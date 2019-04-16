@@ -291,6 +291,22 @@ def Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_state
 
 # SARSA update, returns next action #
 def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states):
+
+  is_terminal = False
+  val = 0
+
+  for cell in dropoff_cells:
+    val += cell.num_of_blocks
+    if val == 15:
+      is_terminal = True
+
+  if is_terminal:
+    agent.initialize()
+    initalizeCells(pickup_states, dropoff_states)
+    print("\n-----------INITIALIZED----------")
+    agent.action = actions.RESET
+    return None
+
   position = agent.position
   row = position[0]
   col = position[1]
@@ -311,16 +327,6 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states
   new_col = next_state[1]
   new_pos = [new_row, new_col]
 
-  # # if pickup or drop off
-  # if isPickup(new_pos, pickup_states):
-  #   cell = getCellFromPosition(new_pos, pickup_cells)
-  #   # if cell.is_empty():
-  #   #   pickup_q_table[new_row][new_col] = [0, 0, 0, 0, 0, 0]
-  # elif isDropOff(new_pos, dropoff_states):
-  #   cell = getCellFromPosition(new_pos, dropoff_cells)
-  #   # if cell.is_full():
-  #   #   dropoff_q_table[new_row][new_col] = [0, 0, 0, 0, 0, 0]
-
   next_possible_actions = getAllPossibleNextAction(next_state)  # all possible actions in s'
   next_action = getPolicyAction(agent, next_state, next_possible_actions, pickup_states, dropoff_states)  # a' = next action in s'
 
@@ -334,21 +340,6 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states
 
   agent.updateState(next_state)
   agent.updatePosition()
-
-  is_terminal = False
-  val = 0
-
-  for cell in dropoff_cells:
-    val += cell.num_of_blocks
-    if val == 15:
-      is_terminal = True
-
-  if is_terminal:
-    agent.initialize()
-    initalizeCells(pickup_states, dropoff_states)
-    print("\n-----------INITIALIZED----------")
-    agent.action = actions.RESET
-    return None
 
   return next_action
 

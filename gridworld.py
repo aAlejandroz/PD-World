@@ -238,6 +238,9 @@ class GridWorld(Frame):
     global dropoff_q_table
     global agent
 
+    self.update_agent()
+    self.update_active_states()
+
     q_table = dropoff_q_table if agent.hasBlock() else pickup_q_table
 
     row = 0
@@ -306,9 +309,6 @@ class GridWorld(Frame):
                          fill='white', tags='nums', angle=90)
       column += 1
 
-    self.update_agent()
-    self.update_active_states()
-
   def create_agent(self):
     self.agent = self.c.create_oval(434, 34, 464, 64, fill='cyan', tags='Agent')
     self.agent_data["item"] = self.c.find_closest(448, 47)[0]
@@ -345,12 +345,20 @@ class GridWorld(Frame):
 
 
   def moveAndUpdateAgent(self):
-    time.sleep(0.2)
-    self.move_agent(agent.action)
+    # time.sleep(0.2)
     self.delete_nums()
     self.update_arrows()
     self.update_gird_numbs()
+    self.move_agent(agent.action)
+
     self.master.update()
+
+
+  def reset_world(self):
+    self.update_active_states()
+    self.reset_cells()
+    self.resetAgent()
+    time.sleep(1)
 
 
   def move_agent(self, action):
@@ -363,9 +371,7 @@ class GridWorld(Frame):
     elif action.name == "WEST":
       self.c.move(self.agent, -100, 0)
     elif action.name == "RESET":
-      self.reset_cells()
-      self.resetAgent()
-      time.sleep(1)
+      self.reset_world()
 
     self.master.update()
 
@@ -448,18 +454,17 @@ class GridWorld(Frame):
 
     agent.policy = "PRandom"
     next_action = SARSA_update(learning_rate, discount_rate, None, agent, pickup_states, dropoff_states)
-    self.moveAndUpdateAgent()
 
     for index in range(200):
-      next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
       self.moveAndUpdateAgent()
+      next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
 
     print("\n|---------------- EXPLOIT POLICY ----------------| \n")
 
+    agent.policy = "PExploit"
     for index in range(7800):
-      agent.policy = "PExploit"
-      next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
       self.moveAndUpdateAgent()
+      next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
 
     print("FINISHED")
 
