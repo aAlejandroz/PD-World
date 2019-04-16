@@ -13,9 +13,9 @@ class GridWorld(Frame):
     self.agent_data = {"x": 0, "y": 0, "item": None}
     self.create_grid()
     self.num = 1
-    self.update_gird_numbs()
     self.agent = ()
     self.create_agent()
+    self.update_gird_numbs()
     self.master.bind("<space>", lambda e: self.prompt_experiments())
     self.c.pack(fill=BOTH, expand=True)
 
@@ -23,13 +23,15 @@ class GridWorld(Frame):
     w = 500
     h = 500
     self.c.delete('grid_line')
-    self.c.create_rectangle(0, 0, 100, 100, fill="sea green")
-    self.c.create_rectangle(200, 200, 300, 300, fill="sea green")
-    self.c.create_rectangle(400, 400, 500, 500, fill="sea green")
 
-    self.c.create_rectangle(400, 100, 500, 200, fill="dark orange")
-    self.c.create_rectangle(300, 400, 200, 500, fill="dark orange")
-    self.c.create_rectangle(0, 400, 100, 500, fill="dark orange")
+    self.pickup1 = self.c.create_rectangle(0, 0, 100, 100, fill="sea green")
+    self.pickup2 = self.c.create_rectangle(200, 200, 300, 300, fill="sea green")
+    self.pickup3 = self.c.create_rectangle(400, 400, 500, 500, fill="sea green")
+
+    self.dropoff1 = self.c.create_rectangle(400, 100, 500, 200, fill="dark orange")
+    self.dropoff2 = self.c.create_rectangle(0, 400, 100, 500, fill="dark orange")
+    self.dropoff3 = self.c.create_rectangle(300, 400, 200, 500, fill="dark orange")
+
     y_coordinate = 0
     for i in range(0, 500, 100):
       self.c.create_line(i + 40, y_coordinate + 50, i + 60, y_coordinate + 50, fill='red', width=1, arrow=FIRST, tags='nums')
@@ -230,6 +232,7 @@ class GridWorld(Frame):
         index = i
     return index
 
+
   def update_gird_numbs(self):
     global pickup_q_table
     global dropoff_q_table
@@ -303,17 +306,69 @@ class GridWorld(Frame):
                          fill='white', tags='nums', angle=90)
       column += 1
 
+    self.update_agent()
+    self.update_active_states()
+
   def create_agent(self):
     self.agent = self.c.create_oval(434, 34, 464, 64, fill='cyan', tags='Agent')
     self.agent_data["item"] = self.c.find_closest(448, 47)[0]
 
+
+  def update_active_states(self):
+    pickup_list = [self.pickup1, self.pickup2, self.pickup3]
+    dropoff_list = [self.dropoff1, self.dropoff2, self.dropoff3]
+
+    for i in range(len(pickup_cells)):
+      if pickup_cells[i].is_empty():
+        self.c.itemconfig(pickup_list[i], fill="snow3")
+
+    for i in range(len(dropoff_cells)):
+      if dropoff_cells[i].is_full():
+        self.c.itemconfig(dropoff_list[i], fill="snow3")
+
+
+  def reset_cells(self):
+    pickup_list = [self.pickup1, self.pickup2, self.pickup3]
+    dropoff_list = [self.dropoff1, self.dropoff2, self.dropoff3]
+
+    for i in range(len(pickup_list)):
+      self.c.itemconfig(pickup_list[i], fill="sea green")
+      self.c.itemconfig(dropoff_list[i], fill="dark orange")
+
+  def update_agent(self):
+    global agent
+
+    if agent.hasBlock():
+      self.c.itemconfig(self.agent, fill="yellow", tags='Agent')
+    else:
+      self.c.itemconfig(self.agent, fill="cyan", tags='Agent')
+
+
   def moveAndUpdateAgent(self):
-    # time.sleep(0.2)
+    time.sleep(0.2)
     self.move_agent(agent.action)
     self.delete_nums()
     self.update_arrows()
     self.update_gird_numbs()
     self.master.update()
+
+
+  def move_agent(self, action):
+    if action.name == "NORTH":
+      self.c.move(self.agent, 0, -100)
+    elif action.name == "EAST":
+      self.c.move(self.agent, 100, 0)
+    elif action.name == "SOUTH":
+      self.c.move(self.agent, 0, 100)
+    elif action.name == "WEST":
+      self.c.move(self.agent, -100, 0)
+    elif action.name == "RESET":
+      self.reset_cells()
+      self.resetAgent()
+      time.sleep(1)
+
+    self.master.update()
+
 
   def resetAgent(self):
     self.c.delete(self.agent)
@@ -333,7 +388,7 @@ class GridWorld(Frame):
 
     print("\n|---------------- RANDOM POLICY ----------------| \n")
 
-    for index in range(100):
+    for index in range(4000):
       agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       # time.sleep(0.1)
@@ -359,22 +414,24 @@ class GridWorld(Frame):
     initialize_Q_table()
     initalizeCells(pickup_states, dropoff_states)
 
+    print("\n|---------------- RANDOM POLICY ----------------| \n")
+    agent.policy = "PRandom"
+
     for index in range(200):
-      agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       # time.sleep(0.35)
       self.moveAndUpdateAgent()
 
+    print("\n|---------------- EXPLOIT POLICY ----------------| \n")
+    agent.policy = "PExploit"
+
     for index in range(7800):
-      agent.policy = "PExploit"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       # time.sleep(0.35)
       self.moveAndUpdateAgent()
 
     print("FINISH")
 
-
-    initialize_Q_table()
 
   def experiment_3(self):
 
@@ -387,6 +444,8 @@ class GridWorld(Frame):
     initialize_Q_table()
     initalizeCells(pickup_states, dropoff_states)
 
+    print("\n|---------------- RANDOM POLICY ----------------| \n")
+
     agent.policy = "PRandom"
     next_action = SARSA_update(learning_rate, discount_rate, None, agent, pickup_states, dropoff_states)
     self.moveAndUpdateAgent()
@@ -395,9 +454,7 @@ class GridWorld(Frame):
       next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
       self.moveAndUpdateAgent()
 
-    # TODO Display and interpret the Q-table
-
-    print("POLICY EXPLOIT")
+    print("\n|---------------- EXPLOIT POLICY ----------------| \n")
 
     for index in range(7800):
       agent.policy = "PExploit"
@@ -406,21 +463,6 @@ class GridWorld(Frame):
 
     print("FINISHED")
 
-
-
-  def move_agent(self, action):
-    if action.name == "NORTH":
-      self.c.move(self.agent, 0, -100)
-    elif action.name == "EAST":
-      self.c.move(self.agent, 100, 0)
-    elif action.name == "SOUTH":
-      self.c.move(self.agent, 0, 100)
-    elif action.name == "WEST":
-      self.c.move(self.agent, -100, 0)
-    elif action.name == "RESET":
-      self.resetAgent()
-
-    self.master.update()
 
   def delete_nums(self):
     self.c.delete("nums")

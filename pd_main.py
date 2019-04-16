@@ -178,7 +178,7 @@ def getPolicyAction(agent, state, possible_actions, pickup_states, dropoff_state
     decrementNumBlocksInCell(pos)
     if cell.is_empty():
       cell.isActive = False
-      pickup_q_table[row][col] = [0, 0, 0, 0, 0, 0]    # Q_table values set to 0
+      # pickup_q_table[row][col] = [0, 0, 0, 0, 0, 0]    # Q_table values set to 0
     print('\nAgent picked up a block')
     print(f'Pickup cell {cell.position} = {cell.num_of_blocks}')
   elif pos in dropoff_states and state[2] == 1 and not cell.is_full():
@@ -186,7 +186,7 @@ def getPolicyAction(agent, state, possible_actions, pickup_states, dropoff_state
     incrementNumBlocksInCell(pos)
     if cell.is_full():
       cell.isActive = False
-      dropoff_q_table[row][col] = [0, 0, 0, 0, 0, 0]
+      # dropoff_q_table[row][col] = [0, 0, 0, 0, 0, 0]
     print('\nAgent dropped up a block')
     print(f'Drop off cell {cell.position} = {cell.num_of_blocks}')
   else:                                                 # directional move
@@ -259,13 +259,9 @@ def Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_state
   # if pickup or drop off
   if isPickup(new_pos, pickup_states):
     cell = getCellFromPosition(new_pos, pickup_cells)
-    # if cell.is_empty():
-    #   pickup_q_table[new_row][new_col] = [0,0,0,0,0,0]
 
   elif isDropOff(new_pos, dropoff_states):
     cell = getCellFromPosition(new_pos, dropoff_cells)
-    # if cell.is_full():
-    #   dropoff_q_table[new_row][new_col] = [0,0,0,0,0,0]
 
   if (isPickup(new_pos, pickup_states) or isDropOff(new_pos, dropoff_states)) and not cell.isActive:
     next_max = np.max(q_table[new_row][new_col][0:4])
@@ -315,15 +311,15 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states
   new_col = next_state[1]
   new_pos = [new_row, new_col]
 
-  # if pickup or drop off
-  if isPickup(new_pos, pickup_states):
-    cell = getCellFromPosition(new_pos, pickup_cells)
-    if cell.is_empty():
-      pickup_q_table[new_row][new_col] = [0, 0, 0, 0, 0, 0]
-  elif isDropOff(new_pos, dropoff_states):
-    cell = getCellFromPosition(new_pos, dropoff_cells)
-    if cell.is_full():
-      dropoff_q_table[new_row][new_col] = [0, 0, 0, 0, 0, 0]
+  # # if pickup or drop off
+  # if isPickup(new_pos, pickup_states):
+  #   cell = getCellFromPosition(new_pos, pickup_cells)
+  #   # if cell.is_empty():
+  #   #   pickup_q_table[new_row][new_col] = [0, 0, 0, 0, 0, 0]
+  # elif isDropOff(new_pos, dropoff_states):
+  #   cell = getCellFromPosition(new_pos, dropoff_cells)
+  #   # if cell.is_full():
+  #   #   dropoff_q_table[new_row][new_col] = [0, 0, 0, 0, 0, 0]
 
   next_possible_actions = getAllPossibleNextAction(next_state)  # all possible actions in s'
   next_action = getPolicyAction(agent, next_state, next_possible_actions, pickup_states, dropoff_states)  # a' = next action in s'
