@@ -380,6 +380,7 @@ class GridWorld(Frame):
     self.c.delete(self.agent)
     self.create_agent()
 
+
   def experiment_1(self):
 
     learning_rate = 0.3
@@ -396,7 +397,6 @@ class GridWorld(Frame):
     for index in range(4000):
       agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      # time.sleep(0.1)
       self.moveAndUpdateAgent()
 
     print("\n|---------------- GREEDY POLICY ----------------| \n")
@@ -404,7 +404,6 @@ class GridWorld(Frame):
     for index in range(4000):
       agent.policy = "PGreedy"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      # time.sleep(0.1)
       self.moveAndUpdateAgent()
 
     print("FINISH")
@@ -424,15 +423,15 @@ class GridWorld(Frame):
 
     for index in range(200):
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      # time.sleep(0.35)
       self.moveAndUpdateAgent()
 
+    #add to data list for num of operators
+    #add to data list for bank account
     print("\n|---------------- EXPLOIT POLICY ----------------| \n")
     agent.policy = "PExploit"
 
     for index in range(7800):
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      # time.sleep(0.35)
       self.moveAndUpdateAgent()
 
     print("FINISH")
