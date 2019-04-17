@@ -18,7 +18,7 @@ class GridWorld(Frame):
     self.num = 1
     self.agent = ()
     self.create_agent()
-    self.update_gird_numbs()
+    self.update_grid_nums()
     self.master.bind("<space>", lambda e: self.prompt_experiments())
     self.c.pack(fill=BOTH, expand=True)
 
@@ -33,13 +33,19 @@ class GridWorld(Frame):
       self.dropoff2 = self.c.create_rectangle(0, 400, 100, 500, fill="dark orange")
       self.dropoff3 = self.c.create_rectangle(300, 400, 200, 500, fill="dark orange")
     elif num == 1:
-      self.pickup1 = self.c.create_rectangle(400, 100, 500, 200, fill="sea green")
-      self.pickup2 = self.c.create_rectangle(0, 400, 100, 500, fill="sea green")
-      self.pickup3 = self.c.create_rectangle(300, 400, 200, 500, fill="sea green")
+      self.c.coords(self.pickup1, 400, 100, 500, 200)
+      self.c.itemconfig(self.pickup1, fill="sea green")
+      self.c.coords(self.pickup2, 0, 400, 100, 500)
+      self.c.itemconfig(self.pickup2, fill="sea green")
+      self.c.coords(self.pickup3, 300, 400, 200, 500)
+      self.c.itemconfig(self.pickup3, fill="sea green")
 
-      self.dropoff1 = self.c.create_rectangle(0, 0, 100, 100, fill="dark orange")
-      self.dropoff2 = self.c.create_rectangle(200, 200, 300, 300, fill="dark orange")
-      self.dropoff3 = self.c.create_rectangle(400, 400, 500, 500, fill="dark orange")
+      self.c.coords(self.dropoff1, 0, 0, 100, 100)
+      self.c.itemconfig(self.dropoff1, fill="dark orange")
+      self.c.coords(self.dropoff2, 200, 200, 300, 300)
+      self.c.itemconfig(self.dropoff2, fill="dark orange")
+      self.c.coords(self.dropoff3, 400, 400, 500, 500)
+      self.c.itemconfig(self.dropoff3, fill="dark orange")
 
 
   def create_grid(self):
@@ -240,6 +246,7 @@ class GridWorld(Frame):
                              tags='nums')
       column += 1
 
+
   def get_max_q_value(self, x, y, table):
     max = table[x][y][3]
     index = 3
@@ -250,7 +257,7 @@ class GridWorld(Frame):
     return index
 
 
-  def update_gird_numbs(self):
+  def update_grid_nums(self):
     global pickup_q_table
     global dropoff_q_table
     global agent
@@ -326,30 +333,10 @@ class GridWorld(Frame):
                          fill='white', tags='nums', angle=90)
       column += 1
 
+
   def create_agent(self):
     self.agent = self.c.create_oval(434, 34, 464, 64, fill='cyan', tags='Agent')
 
-
-  def update_active_states(self):
-    pickup_list = [self.pickup1, self.pickup2, self.pickup3]
-    dropoff_list = [self.dropoff1, self.dropoff2, self.dropoff3]
-
-    for i in range(len(pickup_cells)):
-      if pickup_cells[i].is_empty():
-        self.c.itemconfig(pickup_list[i], fill="snow3")
-
-    for i in range(len(dropoff_cells)):
-      if dropoff_cells[i].is_full():
-        self.c.itemconfig(dropoff_list[i], fill="snow3")
-
-
-  def reset_cells(self):
-    pickup_list = [self.pickup1, self.pickup2, self.pickup3]
-    dropoff_list = [self.dropoff1, self.dropoff2, self.dropoff3]
-
-    for i in range(len(pickup_list)):
-      self.c.itemconfig(pickup_list[i], fill="sea green")
-      self.c.itemconfig(dropoff_list[i], fill="dark orange")
 
   def update_agent(self):
     global agent
@@ -359,24 +346,50 @@ class GridWorld(Frame):
     else:
       self.c.itemconfig(self.agent, fill="cyan", tags='Agent')
 
+  # Function deactivate cell if no blocks in pickup or dropoff cell is full
+  def update_active_states(self):
+    pickup_list = [self.pickup1, self.pickup2, self.pickup3]
+    dropoff_list = [self.dropoff1, self.dropoff2, self.dropoff3]
 
+    # TODO: update pickup cells when we switch
+    for i in range(len(pickup_cells)):
+      if pickup_cells[i].is_empty():
+        self.c.itemconfig(pickup_list[i], fill="snow3")
+
+    for i in range(len(dropoff_cells)):
+      if dropoff_cells[i].is_full():
+        self.c.itemconfig(dropoff_list[i], fill="snow3")
+
+  # Resets color of pickup/dropoff cells
+  def reset_cells_color(self):
+    pickup_list = [self.pickup1, self.pickup2, self.pickup3]
+    dropoff_list = [self.dropoff1, self.dropoff2, self.dropoff3]
+
+    for i in range(len(pickup_list)):
+      self.c.itemconfig(pickup_list[i], fill="sea green")
+      self.c.itemconfig(dropoff_list[i], fill="dark orange")
+
+
+  # Moves agent and update grid numbers & arrows
   def moveAndUpdateAgent(self):
     time.sleep(self.seconds)
     self.delete_nums()
     self.update_arrows()
-    self.update_gird_numbs()
+    self.update_grid_nums()
     self.move_agent(agent.action)
 
     self.master.update()
 
 
+  # Resets cell colors and recreates agent in top right
   def reset_world(self):
     self.update_active_states()
-    self.reset_cells()
+    self.reset_cells_color()
     self.resetAgent()
     time.sleep(1)
 
 
+  # Moves agent on canvas
   def move_agent(self, action):
     if action.name == "NORTH":
       self.c.move(self.agent, 0, -100)
@@ -392,11 +405,13 @@ class GridWorld(Frame):
     self.master.update()
 
 
+  # Deletes and reinitializes agent
   def resetAgent(self):
     self.c.delete(self.agent)
     self.create_agent()
 
 
+  # Writes output to a txt file
   def output_(self):
     file1 = open("MyFile.txt","w")
     print(bank_account_list)
@@ -406,6 +421,7 @@ class GridWorld(Frame):
     file1.write(' '.join(map(str,num_operator_list)))
 
 
+  # --------------------------------- EXPERIMENTS -------------------------------------- #
   def experiment_1(self):
 
     learning_rate = 0.3
@@ -414,10 +430,10 @@ class GridWorld(Frame):
     pickup_states = [[0, 0], [2, 2], [4, 4]]
     dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
+    agent.reset()
+
     initialize_Q_table()
     initializeCells(pickup_states, dropoff_states)
-    agent.initialize()
-    agent.reset_terminal_reached()
 
     print("\n|---------------- RANDOM POLICY ----------------| \n")
 
@@ -443,28 +459,27 @@ class GridWorld(Frame):
     pickup_states = [[0, 0], [2, 2], [4, 4]]
     dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
+    agent.reset()
+
     initialize_Q_table()
     initializeCells(pickup_states, dropoff_states)
-    agent.initialize()
-    agent.reset_terminal_reached()
 
     print("\n|---------------- RANDOM POLICY ----------------| \n")
-    agent.policy = "PRandom"
 
     for index in range(200):
+      agent.policy = "PRandom"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       self.moveAndUpdateAgent()
 
     print("\n|---------------- EXPLOIT POLICY ----------------| \n")
-    agent.policy = "PExploit"
 
     for index in range(7800):
+      agent.policy = "PExploit"
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
       self.moveAndUpdateAgent()
 
     print("FINISH")
     self.output_()
-
 
   def experiment_3(self):
 
@@ -474,16 +489,15 @@ class GridWorld(Frame):
     pickup_states = [[0, 0], [2, 2], [4, 4]]
     dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
+    agent.reset()
+
     initialize_Q_table()
     initializeCells(pickup_states, dropoff_states)
-    agent.initialize()
-    agent.reset_terminal_reached()
 
     print("\n|---------------- RANDOM POLICY ----------------| \n")
 
     agent.policy = "PRandom"
     next_action = SARSA_update(learning_rate, discount_rate, None, agent, pickup_states, dropoff_states)
-
     for index in range(200):
       self.moveAndUpdateAgent()
       next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
@@ -498,17 +512,17 @@ class GridWorld(Frame):
     print("FINISHED")
     self.output_()
 
-  def experiments_4(self):
+  def experiment_4(self):
     learning_rate = 0.3
     discount_rate = 1
 
     pickup_states = [[0, 0], [2, 2], [4, 4]]
     dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
+    agent.reset()
+
     initialize_Q_table()
     initializeCells(pickup_states, dropoff_states)
-    agent.initialize()
-    agent.reset_terminal_reached()
 
     print("\n|---------------- RANDOM POLICY ----------------| \n")
 
@@ -518,12 +532,10 @@ class GridWorld(Frame):
       self.moveAndUpdateAgent()
       next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
 
-    # TODO Display and interpret the Q-table
-
     print("\n|---------------- EXPLOIT POLICY ----------------| \n")
 
+    agent.policy = "PExploit"
     for index in range(7800):
-      agent.policy = "PExploit"
       self.moveAndUpdateAgent()
       next_action = SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states)
 
@@ -537,13 +549,13 @@ class GridWorld(Frame):
     pickup_states = [[0, 0], [2, 2], [4, 4]]
     dropoff_states =  [[1, 4], [4, 0], [4, 2]]
 
-    new_pickup_states = [[1, 4], [4, 0], [4, 2]]
-    new_dropoff_states = [[0, 0], [2, 2], [4, 4]]
+    # new_pickup_states = [[1, 4], [4, 0], [4, 2]]
+    # new_dropoff_states = [[0, 0], [2, 2], [4, 4]]
+
+    agent.reset()
 
     initialize_Q_table()
     initializeCells(pickup_states, dropoff_states)
-    agent.initialize()
-    agent.reset_terminal_reached()
 
     swapped = False
 
@@ -552,15 +564,13 @@ class GridWorld(Frame):
     agent.policy = "PRandom"
     for index in range(200):
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      self.moveAndUpdateAgent()
       if agent.getTerminalStatesReached() == 2 and not swapped:
-        swapped = True
         print("\n|---------------- SWAPPED ----------------| \n")
-        pickup_states, new_pickup_states = new_pickup_states, pickup_states
-        dropoff_states, new_dropoff_states = new_dropoff_states, dropoff_states
-        print("New pickup states: ", pickup_states)
-        print("New dropoff states: ", dropoff_states)
+        swapped = True
+        pickup_states, dropoff_states = dropoff_states, pickup_states
         self.initialize_pickup_and_dropoff(1)
+        initializeCells(pickup_states, dropoff_states)
+      self.moveAndUpdateAgent()
 
 
     print("\n|---------------- EXPLOIT POLICY ----------------| \n")
@@ -568,15 +578,13 @@ class GridWorld(Frame):
     agent.policy = "PExploit"
     for index in range(7800):
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
-      self.moveAndUpdateAgent()
       if agent.getTerminalStatesReached() == 2 and not swapped:
-        swapped = True
         print("\n|---------------- SWAPPED ----------------| \n")
-        pickup_states, new_pickup_states = new_pickup_states, pickup_states
-        dropoff_states, new_dropoff_states = new_dropoff_states, dropoff_states
-        print("New pickup states: ", pickup_states)
-        print("New dropoff states: ", dropoff_states)
+        swapped = True
+        pickup_states, dropoff_states = dropoff_states, pickup_states
         self.initialize_pickup_and_dropoff(1)
+        initializeCells(pickup_states, dropoff_states)
+      self.moveAndUpdateAgent()
 
     print("FINISHED")
     self.output_()

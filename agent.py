@@ -13,6 +13,11 @@ class Agent:
     self.reward = 0
     self.num_operators = 0
 
+  def reset(self):
+    self.initialize()
+    self.policy = None
+    self.terminal_states_reached = 0
+
   def initialize(self):
     self.action = None
     self.past_state = None

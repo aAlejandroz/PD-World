@@ -47,7 +47,16 @@ pickup_cells = []   # list of pickup cells
 dropoff_cells = []  # list of drop off cells
 
 
+def clear_lists():
+  bank_account_list.clear()
+  num_operator_list.clear()
 
+
+# swaps the values in the q table
+def swap_q_tables():
+  global pickup_q_table, dropoff_q_table
+
+  pickup_q_table, dropoff_q_table = dropoff_q_table, pickup_q_table
 
 # random policy #
 # returns a random number in the possible actions list
@@ -126,6 +135,15 @@ def initializeCells(pickup_states, dropoff_states):
   for pos in dropoff_states:
     dropoff_cells.append(Cells(pos, 0))
 
+  for i in range(len(pickup_states)):
+    print("Pickup cell ", i, " = ", pickup_cells[i].position)
+
+  print()
+
+  for i in range(len(dropoff_states)):
+    print("dropoff cell ", i, " = ", dropoff_cells[i].position)
+
+
 # returns the cell object in the given position #
 # pos = [x,y]
 def getCellFromPosition(pos, cell_list):
@@ -184,7 +202,6 @@ def getPolicyAction(agent, state, possible_actions, pickup_states, dropoff_state
     decrementNumBlocksInCell(pos)
     if cell.is_empty():
       cell.isActive = False
-      # pickup_q_table[row][col] = [0, 0, 0, 0, 0, 0]    # Q_table values set to 0
     print('\nAgent picked up a block')
     print(f'Pickup cell {cell.position} = {cell.num_of_blocks}')
   elif pos in dropoff_states and state[2] == 1 and not cell.is_full():
@@ -192,8 +209,7 @@ def getPolicyAction(agent, state, possible_actions, pickup_states, dropoff_state
     incrementNumBlocksInCell(pos)
     if cell.is_full():
       cell.isActive = False
-      # dropoff_q_table[row][col] = [0, 0, 0, 0, 0, 0]
-    print('\nAgent dropped up a block')
+    print('\nAgent dropped off a block')
     print(f'Drop off cell {cell.position} = {cell.num_of_blocks}')
   else:                                                 # directional move
     if agent.policy == "PRandom":
@@ -227,17 +243,47 @@ def getNextState(old_state, action):
 
   return new_state
 
+# returns max q value in list of possible actions #
+def getMaxQvalue(possible_actions, state):
+
+  hasBlock = True if state[2] == 1 else False
+
+  q_table = dropoff_q_table if hasBlock else pickup_q_table
+  row = state[0]
+  col = state[1]
+
+  possible_q_values = []
+
+  for i in possible_actions:
+    possible_q_values.append(q_table[row][col][i])  # Appends to list all possible q_value
+
+  return np.max(possible_q_values)
 
 # returns list of all possible action in a given position #
-def getAllPossibleNextAction(position):
-  row = position[0]
-  col = position[1]
+def getAllPossibleNextAction(state, pickup_states, dropoff_states):
+
+  row = state[0]
+  col = state[1]
+  pos = [row, col]
+
+  hasBlock = True if state[2] == 1 else False
 
   possible_actions = []
 
   for i in range(4):
     if environment[row][col][i] != None:
       possible_actions.append(i)
+
+  if pos in pickup_states:
+    cell = getCellFromPosition(pos, pickup_cells)
+  elif pos in dropoff_states:
+    cell = getCellFromPosition(pos, dropoff_cells)
+
+  # if pos in pickup_states and not hasBlock and not cell.is_empty():
+  if pos in pickup_states and not hasBlock and not cell.is_empty():
+    possible_actions.append(actions.PICKUP.value)
+  elif pos in dropoff_states and hasBlock and not cell.is_full():
+    possible_actions.append(actions.DROP.value)
 
   return (possible_actions)
 
@@ -248,7 +294,7 @@ def Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_state
   row = position[0]
   col = position[1]
 
-  possible_actions = getAllPossibleNextAction(position)                                          # possible actions in state
+  possible_actions = getAllPossibleNextAction(agent.state, pickup_states, dropoff_states)                                          # possible actions in state
   action = getPolicyAction(agent, agent.state, possible_actions, pickup_states, dropoff_states)  # a = action chosen in state
   agent.action = action
   next_state = getNextState(agent.state, action)                                                 # s' = next state after action is applied
@@ -261,27 +307,28 @@ def Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_state
   q_table = dropoff_q_table if agent.hasBlock() else pickup_q_table
 
   old_value = q_table[row][col][action.value]
-
   new_pos = [new_row, new_col]
+  next_possible_action = getAllPossibleNextAction(next_state, pickup_states, dropoff_states)
+  # next_action = getPolicyAction(agent, next_state, next_possible_action, pickup_states, dropoff_states)
 
   # if pickup or drop off
   if isPickup(new_pos, pickup_states):
-    print(new_row)
-    print("Pickup state: ", pickup_states)
     cell = getCellFromPosition(new_pos, pickup_cells)
-
   elif isDropOff(new_pos, dropoff_states):
-    print(new_pos)
-    print("Dropoff state: ", dropoff_states)
     cell = getCellFromPosition(new_pos, dropoff_cells)
 
-  if (isPickup(new_pos, pickup_states) or isDropOff(new_pos, dropoff_states)) and not cell.isActive:
-    next_max = np.max(q_table[new_row][new_col][0:4])
-  else:
-    next_max = np.max(q_table[new_row][new_col])
+  # if (isPickup(new_pos, pickup_states) or isDropOff(new_pos, dropoff_states)) and not cell.isActive and not cell.available:
+  #   next_max = np.max(q_table[new_row][new_col][0:4])
+  # else:
+  #   next_max = np.max(q_table[new_row][new_col])
 
-  new_q_value = (1 - learning_rate) * old_value + learning_rate * (agent.reward + discount_rate * next_max)
+  next_max = getMaxQvalue(next_possible_action, next_state)
+
+  new_q_value = ((1 - learning_rate) * old_value) + (learning_rate * (agent.reward + discount_rate * next_max))
   q_table[row][col][action.value] = round(new_q_value, 2)
+
+  print(f'Q({action.name},{agent.state}) = {new_q_value} = (1 - {learning_rate}) * {old_value} + {learning_rate} * ({agent.reward} + {discount_rate} + {next_max})')
+  print("Q-table: ", q_table[row][col])
 
   agent.updateState(next_state)
   agent.updatePosition()
@@ -302,7 +349,6 @@ def Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_state
     agent.action = actions.RESET
     initializeCells(pickup_states, dropoff_states)
     print("\n-----------INITIALIZED----------")
-
 
 # SARSA update, returns next action #
 def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states, dropoff_states):
@@ -330,7 +376,7 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states
   col = position[1]
 
   if next_action is None:
-    possible_actions = getAllPossibleNextAction(position)                                                  # possible actions in state
+    possible_actions = getAllPossibleNextAction(agent.state, pickup_states, dropoff_states)                                                  # possible actions in state
     action = getPolicyAction(agent, agent.state, possible_actions, pickup_states, dropoff_states)          # a = action chosen in state
   else:
     action = next_action                                                    # we know what our action is, so we chose it
@@ -345,7 +391,7 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states
   new_col = next_state[1]
   new_pos = [new_row, new_col]
 
-  next_possible_actions = getAllPossibleNextAction(next_state)  # all possible actions in s'
+  next_possible_actions = getAllPossibleNextAction(next_state, pickup_states, dropoff_states)  # all possible actions in s'
   next_action = getPolicyAction(agent, next_state, next_possible_actions, pickup_states, dropoff_states)  # a' = next action in s'
 
   q_table = dropoff_q_table if agent.hasBlock() else pickup_q_table
