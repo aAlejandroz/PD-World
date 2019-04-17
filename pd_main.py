@@ -116,7 +116,7 @@ def incrementNumBlocksInCell(pos):
   cell.num_of_blocks += 1
 
 # Initialize environment to original #
-def initalizeCells(pickup_states, dropoff_states):
+def initializeCells(pickup_states, dropoff_states):
   pickup_cells.clear()
   dropoff_cells.clear()
 
@@ -241,6 +241,8 @@ def getAllPossibleNextAction(position):
 
   return (possible_actions)
 
+
+# returns number of times terminal state reached
 def Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states):
   position = agent.position
   row = position[0]
@@ -264,9 +266,13 @@ def Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_state
 
   # if pickup or drop off
   if isPickup(new_pos, pickup_states):
+    print(new_row)
+    print("Pickup state: ", pickup_states)
     cell = getCellFromPosition(new_pos, pickup_cells)
 
   elif isDropOff(new_pos, dropoff_states):
+    print(new_pos)
+    print("Dropoff state: ", dropoff_states)
     cell = getCellFromPosition(new_pos, dropoff_cells)
 
   if (isPickup(new_pos, pickup_states) or isDropOff(new_pos, dropoff_states)) and not cell.isActive:
@@ -292,8 +298,9 @@ def Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_state
     bank_account_list.append(agent.bank_account)
     num_operator_list.append(agent.num_operators)
     agent.initialize()
+    agent.terminal_states_reached += 1
     agent.action = actions.RESET
-    initalizeCells(pickup_states, dropoff_states)
+    initializeCells(pickup_states, dropoff_states)
     print("\n-----------INITIALIZED----------")
 
 
@@ -309,12 +316,11 @@ def SARSA_update(learning_rate, discount_rate, next_action, agent, pickup_states
       is_terminal = True
 
   if is_terminal:
-
     bank_account_list.append(agent.bank_account)
     num_operator_list.append(agent.num_operators)
-
     agent.initialize()
-    initalizeCells(pickup_states, dropoff_states)
+    agent.terminal_states_reached += 1
+    initializeCells(pickup_states, dropoff_states)
     print("\n-----------INITIALIZED----------")
     agent.action = actions.RESET
     return None

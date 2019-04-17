@@ -8,6 +8,8 @@ from tkinter import PhotoImage
 class GridWorld(Frame):
 
   def __init__(self, master=None):
+    self.pickup_list = []
+    self.dropoff_list = []
     self.master = master
     Frame.__init__(self, self.master)
     self.c = Canvas(self.master, height=500, width=500, bg='black')
@@ -20,18 +22,32 @@ class GridWorld(Frame):
     self.master.bind("<space>", lambda e: self.prompt_experiments())
     self.c.pack(fill=BOTH, expand=True)
 
+
+  def initialize_pickup_and_dropoff(self, num):
+    if num == 0:
+      self.pickup1 = self.c.create_rectangle(0, 0, 100, 100, fill="sea green")
+      self.pickup2 = self.c.create_rectangle(200, 200, 300, 300, fill="sea green")
+      self.pickup3 = self.c.create_rectangle(400, 400, 500, 500, fill="sea green")
+
+      self.dropoff1 = self.c.create_rectangle(400, 100, 500, 200, fill="dark orange")
+      self.dropoff2 = self.c.create_rectangle(0, 400, 100, 500, fill="dark orange")
+      self.dropoff3 = self.c.create_rectangle(300, 400, 200, 500, fill="dark orange")
+    elif num == 1:
+      self.pickup1 = self.c.create_rectangle(400, 100, 500, 200, fill="sea green")
+      self.pickup2 = self.c.create_rectangle(0, 400, 100, 500, fill="sea green")
+      self.pickup3 = self.c.create_rectangle(300, 400, 200, 500, fill="sea green")
+
+      self.dropoff1 = self.c.create_rectangle(0, 0, 100, 100, fill="dark orange")
+      self.dropoff2 = self.c.create_rectangle(200, 200, 300, 300, fill="dark orange")
+      self.dropoff3 = self.c.create_rectangle(400, 400, 500, 500, fill="dark orange")
+
+
   def create_grid(self):
     w = 500
     h = 500
     self.c.delete('grid_line')
 
-    self.pickup1 = self.c.create_rectangle(0, 0, 100, 100, fill="sea green")
-    self.pickup2 = self.c.create_rectangle(200, 200, 300, 300, fill="sea green")
-    self.pickup3 = self.c.create_rectangle(400, 400, 500, 500, fill="sea green")
-
-    self.dropoff1 = self.c.create_rectangle(400, 100, 500, 200, fill="dark orange")
-    self.dropoff2 = self.c.create_rectangle(0, 400, 100, 500, fill="dark orange")
-    self.dropoff3 = self.c.create_rectangle(300, 400, 200, 500, fill="dark orange")
+    self.initialize_pickup_and_dropoff(0)
 
     y_coordinate = 0
     for i in range(0, 500, 100):
@@ -399,7 +415,9 @@ class GridWorld(Frame):
     dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
     initialize_Q_table()
-    initalizeCells(pickup_states, dropoff_states)
+    initializeCells(pickup_states, dropoff_states)
+    agent.initialize()
+    agent.reset_terminal_reached()
 
     print("\n|---------------- RANDOM POLICY ----------------| \n")
 
@@ -426,7 +444,9 @@ class GridWorld(Frame):
     dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
     initialize_Q_table()
-    initalizeCells(pickup_states, dropoff_states)
+    initializeCells(pickup_states, dropoff_states)
+    agent.initialize()
+    agent.reset_terminal_reached()
 
     print("\n|---------------- RANDOM POLICY ----------------| \n")
     agent.policy = "PRandom"
@@ -455,7 +475,9 @@ class GridWorld(Frame):
     dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
     initialize_Q_table()
-    initalizeCells(pickup_states, dropoff_states)
+    initializeCells(pickup_states, dropoff_states)
+    agent.initialize()
+    agent.reset_terminal_reached()
 
     print("\n|---------------- RANDOM POLICY ----------------| \n")
 
@@ -484,7 +506,9 @@ class GridWorld(Frame):
     dropoff_states = [[1, 4], [4, 0], [4, 2]]
 
     initialize_Q_table()
-    initalizeCells(pickup_states, dropoff_states)
+    initializeCells(pickup_states, dropoff_states)
+    agent.initialize()
+    agent.reset_terminal_reached()
 
     print("\n|---------------- RANDOM POLICY ----------------| \n")
 
@@ -506,30 +530,53 @@ class GridWorld(Frame):
     print("FINISHED")
     self.output_()
 
-
   def experiment_5(self):
     learning_rate = 0.3
     discount_rate = 0.5
 
-    pickup_states =  [[1, 4], [4, 0], [4, 2]]
-    dropoff_states = [[0, 0], [2, 2], [4, 4]]
+    pickup_states = [[0, 0], [2, 2], [4, 4]]
+    dropoff_states =  [[1, 4], [4, 0], [4, 2]]
+
+    new_pickup_states = [[1, 4], [4, 0], [4, 2]]
+    new_dropoff_states = [[0, 0], [2, 2], [4, 4]]
 
     initialize_Q_table()
-    initalizeCells(pickup_states, dropoff_states)
+    initializeCells(pickup_states, dropoff_states)
+    agent.initialize()
+    agent.reset_terminal_reached()
+
+    swapped = False
 
     print("\n|---------------- RANDOM POLICY ----------------| \n")
 
     agent.policy = "PRandom"
     for index in range(200):
-      self.moveAndUpdateAgent()
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
+      self.moveAndUpdateAgent()
+      if agent.getTerminalStatesReached() == 2 and not swapped:
+        swapped = True
+        print("\n|---------------- SWAPPED ----------------| \n")
+        pickup_states, new_pickup_states = new_pickup_states, pickup_states
+        dropoff_states, new_dropoff_states = new_dropoff_states, dropoff_states
+        print("New pickup states: ", pickup_states)
+        print("New dropoff states: ", dropoff_states)
+        self.initialize_pickup_and_dropoff(1)
+
 
     print("\n|---------------- EXPLOIT POLICY ----------------| \n")
 
     agent.policy = "PExploit"
     for index in range(7800):
-      self.moveAndUpdateAgent()
       Q_learning(learning_rate, discount_rate, agent, pickup_states, dropoff_states)
+      self.moveAndUpdateAgent()
+      if agent.getTerminalStatesReached() == 2 and not swapped:
+        swapped = True
+        print("\n|---------------- SWAPPED ----------------| \n")
+        pickup_states, new_pickup_states = new_pickup_states, pickup_states
+        dropoff_states, new_dropoff_states = new_dropoff_states, dropoff_states
+        print("New pickup states: ", pickup_states)
+        print("New dropoff states: ", dropoff_states)
+        self.initialize_pickup_and_dropoff(1)
 
     print("FINISHED")
     self.output_()
@@ -544,25 +591,18 @@ class GridWorld(Frame):
     if experiment_num == 1:
       print("|----------------Running Experiment 1----------------| \n")
       self.experiment_1()
-      # initialize_Q_table()
-      # self.create_agent()
-      # self.delete_nums()
     elif experiment_num == 2:
       print("|----------------Running Experiment 2----------------|\n")
       self.experiment_2()
-      # initialize_Q_table()
-      # self.create_agent()
-      # self.delete_nums()
     elif experiment_num == 3:
       print("|----------------Running Experiment 3----------------|\n")
       self.experiment_3()
-      initialize_Q_table()
-    # elif experiment_num == 4:
-    #   print("|----------------Running Experiment 4----------------|\n")
-    #   experiments_4()
-    # elif experiment_num == 5:
-    #   print("|----------------Running Experiment 5----------------|\n")
-    #   experiment_5()
+    elif experiment_num == 4:
+      print("|----------------Running Experiment 4----------------|\n")
+      self.experiment_4()
+    elif experiment_num == 5:
+      print("|----------------Running Experiment 5----------------|\n")
+      self.experiment_5()
 
 
 class Main(GridWorld):

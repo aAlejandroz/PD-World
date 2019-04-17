@@ -3,6 +3,7 @@ class Agent:
 
 
   def __init__(self):
+    self.terminal_states_reached = 0
     self.action = None
     self.past_state = None
     self.state = [0, 4, 0]
@@ -38,3 +39,9 @@ class Agent:
 
   def hasBlock(self):
     return self.state[2] == 1
+
+  def getTerminalStatesReached(self):
+    return self.terminal_states_reached
+
+  def reset_terminal_reached(self):
+    self.terminal_states_reached = 0
