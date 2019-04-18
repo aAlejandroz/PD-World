@@ -410,20 +410,26 @@ class GridWorld(Frame):
     self.c.delete(self.agent)
     self.create_agent()
 
-
   # Writes output to a txt file
   def output_(self):
     file1 = open("MyFile.txt","w")
     print(bank_account_list)
     print(num_operator_list)
-    file1.write(' '.join(map(str,bank_account_list)))
+
+    file1.write("\n|---------------- Bank account and num operators ----------------| ")
+    file1.write(' '.join(map(str, bank_account_list)))
     file1.write('\n')
-    file1.write(' '.join(map(str,num_operator_list)))
+    file1.write(' '.join(map(str, num_operator_list)))
+    file1.write("|----------------Running Experiment 1 Run 1 ----------------| ")
+    file1.write("\n|------------------------------ Pick up Q table Final -------------------------------|")
+    file1.write(' '.join(map(str, pickup_q_table)))
+    file1.write("\n|------------------------------ Drop off Q table Final -------------------------------|")
+    file1.write(' '.join(map(str, dropoff_q_table)))
+    file1.write(' '.join("\n|---------------- END ----------------| "))
 
 
   # --------------------------------- EXPERIMENTS -------------------------------------- #
   def experiment_1(self):
-
     learning_rate = 0.3
     discount_rate = 0.5
 
@@ -432,6 +438,7 @@ class GridWorld(Frame):
 
     agent.reset()
 
+    clear_lists()
     initialize_Q_table()
     initializeCells(pickup_states, dropoff_states)
 
@@ -461,6 +468,7 @@ class GridWorld(Frame):
 
     agent.reset()
 
+    clear_lists()
     initialize_Q_table()
     initializeCells(pickup_states, dropoff_states)
 
@@ -491,6 +499,7 @@ class GridWorld(Frame):
 
     agent.reset()
 
+    clear_lists()
     initialize_Q_table()
     initializeCells(pickup_states, dropoff_states)
 
@@ -521,6 +530,7 @@ class GridWorld(Frame):
 
     agent.reset()
 
+    clear_lists()
     initialize_Q_table()
     initializeCells(pickup_states, dropoff_states)
 
@@ -543,17 +553,16 @@ class GridWorld(Frame):
     self.output_()
 
   def experiment_5(self):
+
     learning_rate = 0.3
     discount_rate = 0.5
 
     pickup_states = [[0, 0], [2, 2], [4, 4]]
     dropoff_states =  [[1, 4], [4, 0], [4, 2]]
 
-    # new_pickup_states = [[1, 4], [4, 0], [4, 2]]
-    # new_dropoff_states = [[0, 0], [2, 2], [4, 4]]
-
     agent.reset()
 
+    clear_lists()
     initialize_Q_table()
     initializeCells(pickup_states, dropoff_states)
 
@@ -572,7 +581,6 @@ class GridWorld(Frame):
         initializeCells(pickup_states, dropoff_states)
       self.moveAndUpdateAgent()
 
-
     print("\n|---------------- EXPLOIT POLICY ----------------| \n")
 
     agent.policy = "PExploit"
@@ -585,6 +593,7 @@ class GridWorld(Frame):
         self.initialize_pickup_and_dropoff(1)
         initializeCells(pickup_states, dropoff_states)
       self.moveAndUpdateAgent()
+
 
     print("FINISHED")
     self.output_()
